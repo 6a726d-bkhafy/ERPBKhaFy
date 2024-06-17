@@ -1,0 +1,75 @@
+<div class="modal fade" id="modal-new-lancamento" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lançamento Financeiro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-lancamento" action="{% url 'new_lancamento' %}" method="POST" enctype="multipart/form-data" onsubmit="enviarFormulario('form-new-lancamento'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Número da Nota</span>
+                            </div>
+                            <input type="number" class="form-control" id="dado_numnota" name="dado_numnota" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cód Fornecedor</span>
+                            </div>
+                            <input type="number" class="form-control cod" id="id_fornecedor" name="id_fornecedor" min="0" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Fornecedor</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_fornecedor_desc" name="dado_fornecedor_desc" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor Total</span>
+                            </div>
+                            <input type="number" class="form-control" id="dado_valor" name="dado_valor" step="0.01" pattern="\d+(\.\d{2})?" min="0" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tipo de Custo</span>
+                            </div>
+                            <select name="id_custo" id="id_custo" class="form-control" required>
+                                <option value=""></option>
+                                {% for custo in custos %}
+                                <option value="{{ custo.pk }}">{{ custo.dsc }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data de Emissão</span>
+                            </div>
+                            <input type="date" class="form-control" id="dado_emissao" name="dado_emissao" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data de Vencimento</span>
+                            </div>
+                            <input type="date" class="form-control" id="dado_venc" name="dado_venc" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_dsc" name="dado_dsc">
+                        </div>
+                        <div class="mt-2">
+                            Anexar Boleto
+                            <input type="file" class="clearablefileinput form-control-file" name="dado_boleto" id="dado_boleto">
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

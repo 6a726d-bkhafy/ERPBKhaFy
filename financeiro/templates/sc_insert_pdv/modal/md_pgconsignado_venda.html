@@ -1,0 +1,72 @@
+<div class="modal fade" id="modal-pgconsignado-venda" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Abertura de Consignado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-pgconsignado-venda" action="{% url 'pgconsignado_venda' %}" method="POST" onsubmit="enviarFormulario('form-pgconsignado-venda'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código</span>
+                            </div>
+                            <input type="number" class="form-control cod" name="id_usuario" id="id_usuario_cons" min="0" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Vendedor</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_usuario_desc" id="dado_usuario_desc_cons" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código</span>
+                            </div>
+                            <input type="number" class="form-control cod" name="id_cliente" id="id_cliente_cons" min="0" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cliente</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_cliente_desc" id="dado_cliente_desc_cons" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Limite Total</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_limite_cons" id="dado_limite_cons" readonly>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Limite Disponível</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_disp_cons" id="dado_disp_cons" readonly>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor em Atraso R$</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_pend_cons" readonly>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Total de Dias em Atraso</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_atraso_cons" readonly>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data de Devolução</span>
+                            </div>
+                            <input type="date" name="dado_data" id="dado_data" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="dado_total" value="{{ total }}">
+                    <input type="hidden" name="id_venda_pdv" value="1">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

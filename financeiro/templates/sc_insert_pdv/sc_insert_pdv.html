@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>PDV</title>
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container-flex">
+        <div class="card mb-3">
+            <div class="card-body col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="filter">
+                            <a class="icon-menu" href="#" data-bs-toggle="dropdown">
+                              <i class="bi bi-list"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+          
+                                {% if not caixa or caixa.sts == 0 %}
+                                <li>
+                                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-open-caixa">
+                                    Abrir Caixa
+                                  </a>
+                                </li>
+                                {% endif %}
+                                {% if caixa.sts == 1 %}
+                                <li>
+                                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-sangria">
+                                    Sangria
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-close-caixa">
+                                    Fechar Caixa
+                                  </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                        <!--{% if not caixa or caixa.sts == 0 %}
+                        <div class="pt-1 pb-4 title-container">
+                            <h5 class="text-center title-text"><i class="bi bi-x-circle-fill"></i> <img src="{%static 'img/client.png'%}" alt="Cliente" class="img-fluid" style="width: 25vh;"></h5>
+                        </div>
+                        {% else %}
+                        <div class="pt-1 pb-4 title-container">
+                            <h5 class="text-center title-text"><i class="bi bi-check-circle-fill"></i> <img src="{%static 'img/client.png'%}" alt="Cliente" class="img-fluid" style="width: 25vh;"></h5>
+                        </div>
+                        {% endif %}-->
+
+                        <form class="row g-3 needs-validation" action="{% url 'new_venda' %}" method="POST" id="formulario" onsubmit="enviarFormulario('formulario'); return false;">
+        
+                            {% csrf_token %}
+
+                            {% if caixa.sts == 1 %}
+            
+                            <div class="form-group mt-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend col-md-1">
+                                        <span class="input-group-text" id="">Cód.</span>
+                                    </div>
+                                    <input type="number" class="form-control" style="flex:1;" id="id_produto" name="id_produto" min="0" required>
+                                    <div class="input-group-prepend col-md-1">
+                                        <span class="input-group-text" id="">Desc.</span>
+                                    </div>
+                                    <input type="text" class="form-control" style="flex:4;" id="dado_produto_desc" name="dado_produto_desc" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary w-100" type="submit">Adicionar</button>
+                            </div>
+                            <div class="col-md-4"></div>
+
+                            {% else %}
+
+                            <div class="form-group">
+                                <label class="requiredField">Produto</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend col-md-2">
+                                        <span class="input-group-text" id="">Código</span>
+                                    </div>
+                                    <input type="number" class="form-control col-md-2" id="id_produto" name="id_produto" min="0" disabled>
+                                    <div class="input-group-prepend col-md-2">
+                                        <span class="input-group-text" id="">Descrição</span>
+                                    </div>
+                                    <input type="text" class="form-control col-md-4" id="dado_produto_desc" name="dado_produto_desc" disabled>
+                                </div>
+                            </div>
+
+                            {% endif %}
+
+                            <input type="hidden" name="id_venda_pdv" value="0">
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="total-container">
+                        <span class="total-label">Total:</span>
+                        <span class="total-value">R$ {{ total }}</span>
+                        <div>
+                            {% if caixa.sts == 1 %}
+                            <a class="btn btn-danger-insert" href="#" data-bs-toggle="modal" data-bs-target="#modal-clear-venda">Limpar</a>
+                            {% if object_list %}
+                            <a class="btn btn-success-insert" href="#" data-bs-toggle="modal" data-bs-target="#modal-pg-venda">Confirmar</a>
+                            {% else %}
+                            <a class="btn btn-success-insert" href="#">Confirmar</a>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="table-responsive">            
+                        <table class="table table-hover" id="tabela">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cód Produto</th>
+                                    <th scope="col">Descrição</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Valor Unitário</th>
+                                    <th scope="col">Valor Total</th>
+                                    <th scope="col">Desconto</th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    {% if obj.estoque == True %}
+                                    <td>{{ obj.fk_tbprod.pk }}</td>
+                                    <td>{{ obj.fk_tbprod.dsc }}</td>
+                                    <td>{{ obj.qtd }}</td>
+                                    <td>R$ {{ obj.dvlrund }}</td>
+                                    <td>R$ {{ obj.dvlrtotal }}</td>
+                                    <td>{{ obj.pvlrdesc }} %</td>
+                                    {% else %}
+                                    <td class="out-stg">{{ obj.fk_tbprod.pk }}</td>
+                                    <td class="out-stg">{{ obj.fk_tbprod.dsc }}</td>
+                                    <td class="out-stg">{{ obj.qtd }}</td>
+                                    <td class="out-stg">R$ {{ obj.dvlrund }}</td>
+                                    <td class="out-stg">R$ {{ obj.dvlrtotal }}</td>
+                                    <td class="out-stg">{{ obj.pvlrdesc }} %</td>
+                                    {% endif %}
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-delete-venda{{ obj.pk }}">
+                                                    <i class="bi bi-trash"></i> Remover Produto</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-quantidade{{ obj.pk }}">
+                                                    <i class="bi bi-pen"></i> Alterar Quantidade</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-desconto{{ obj.pk }}">
+                                                    <i class="bi bi-currency-dollar"></i> Aplicar Desconto</a>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'sc_insert_pdv/modal/md_delete_venda.html' %}
+                                {% include 'sc_insert_pdv/modal/md_new_desconto.html' %}
+                                {% include 'sc_insert_pdv/modal/md_new_quantidade.html' %}
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'sc_insert_pdv/modal/md_clear_venda.html' %}
+                        {% include 'sc_insert_pdv/modal/md_close_caixa.html' %}
+                        {% include 'sc_insert_pdv/modal/md_open_caixa.html' %}
+                        {% include 'sc_insert_pdv/modal/md_new_sangria.html' %}
+                        {% include 'sc_insert_pdv/modal/md_pg_venda.html' %}
+                        {% include 'sc_insert_pdv/modal/md_pgdinheiro_venda.html' %}
+                        {% include 'sc_insert_pdv/modal/md_pgcartao_venda.html' %}
+                        {% include 'sc_insert_pdv/modal/md_pgcrediario_venda.html' %}
+                        {% include 'sc_insert_pdv/modal/md_pgconsignado_venda.html' %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    window.onload = function() {
+        var today = new Date().toISOString().slice(0, 10);
+        document.getElementById('dado_data_venda').value = today; 
+    };
+</script>
+<script>
+    document.getElementById('form-pgcrediario-venda').addEventListener('submit', function(event) {
+      var dataVenda = document.getElementById('dado_data_venda').value;
+      var primeiraParcela = document.getElementById('dado_data').value;
+  
+      var dataVendaDate = new Date(dataVenda);
+      var primeiraParcelaDate = new Date(primeiraParcela);
+  
+      if (primeiraParcelaDate < dataVendaDate) {
+        alert('A data da primeira parcela deve ser maior ou igual à data da venda.');
+        event.preventDefault(); // Impede o envio do formulário
+        event.stopImmediatePropagation(); // Impede outros listeners de serem chamados
+      }
+    }, true); // True faz com que o listener seja executado na fase de captura
+  </script>
+  
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/autocomplete-produto.js' %}"></script>
+<script src="{% static 'js/focus-produto.js' %}"></script>
+<script src="{% static 'js/enter-produto.js' %}"></script>
+<script src="{% static 'js/autocomplete-usuario-modal.js' %}"></script>
+<script src="{% static 'js/autocomplete-cliente-modal.js' %}"></script>
+<script src="{% static 'js/pdv-troco.js' %}"></script>
+<script src="{% static 'js/pdv-cred.js' %}"></script>
+{% endblock %}

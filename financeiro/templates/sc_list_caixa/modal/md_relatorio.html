@@ -1,0 +1,53 @@
+<div class="modal fade" id="modal-relatorio" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gerar Relatório de Caixa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-relatorio" action="{% url 'relatorio_caixa' %}" method="POST" onsubmit="enviarFormularioPDF('form-relatorio'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">De:</span>
+                            </div>
+                            <input type="date" class="form-control" name="dado_dtinicio">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Até:</span>
+                            </div>
+                            <input type="date" class="form-control" name="dado_dtfim">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cód Vendedor</span>
+                            </div>
+                            <input type="number" name="id_usuario" id="id_usuario_rel" min="0" class="form-control cod">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" id="dado_usuario_desc_rel" class="form-control">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cód Cliente</span>
+                            </div>
+                            <input type="number" name="id_cliente" id="id_cliente_rel" min="0" class="form-control cod">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" id="dado_cliente_desc_rel" class="form-control">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

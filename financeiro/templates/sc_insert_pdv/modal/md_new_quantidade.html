@@ -1,0 +1,32 @@
+<div class="modal fade" id="modal-new-quantidade{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alterar Quantidade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-quantidade{{ obj.pk }}" action="{% url 'new_quantidade' %}" method="POST" onsubmit="enviarFormulario('form-new-quantidade{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nova Quantidade</span>
+                            </div>
+                            <input type="number" class="form-control" name="dado_qtd" id="dado_qtd" pattern="\d+(\.\d{2})?" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="id_venda" value="{{ obj.pk }}">
+                    <input type="hidden" name="id_venda_pdv" value="1">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

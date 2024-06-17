@@ -1,0 +1,24 @@
+<div class="modal fade" id="modal-clear-venda" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Aviso!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-clear-venda" action="{% url 'clear_venda' %}" method="POST" onsubmit="enviarFormulario('form-clear-venda'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    Todos os produtos serão removidos da lista!
+
+                    <input type="hidden" name="id_venda_pdv" value="1">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

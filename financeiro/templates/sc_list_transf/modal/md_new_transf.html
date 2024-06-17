@@ -1,0 +1,51 @@
+<div class="modal fade" id="modal-new-transf" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Transferência</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-transf" action="{% url 'new_transf' %}" method="POST" onsubmit="enviarFormulario('form-new-transf'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">De:</span>
+                            </div>
+                            <select name="id_conta_out" id="id_conta_out" class="form-control" required>
+                                <option value=""></option>
+                                {% for conta in contas %}
+                                <option value="{{ conta.pk }}">{{ conta }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Para:</span>
+                            </div>
+                            <select name="id_conta_in" id="id_conta_in" class="form-control" required>
+                                <option value=""></option>
+                                {% for conta in contas %}
+                                <option value="{{ conta.pk }}">{{ conta }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor Total R$</span>
+                            </div>
+                            <input type="number" class="form-control" name="dado_total" id="dado_total" step="0.01" pattern="\d+(\.\d{2})?" min="0" required>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

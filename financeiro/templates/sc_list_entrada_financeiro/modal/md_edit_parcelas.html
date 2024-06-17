@@ -1,0 +1,52 @@
+<div class="modal fade" id="modal-edit-parcelas{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alterar Valor das Parcelas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-edit-parcelas{{ obj.pk }}" action="{% url 'edit_parcelas' %}" method="POST" onsubmit="enviarFormulario('form-edit-parcelas{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        {% for cred in crediarios %}
+                        {% if cred.pk == obj.fk_tbicred.pk %}
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Total R$</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="{{ cred.dvlr }}">
+                        </div>
+                        {% for i in object_list %}
+                        {% if i.fk_tbicred.pk == cred.pk %}
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Vencimento</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="{{ i.dtvenc|date:'d/m/Y' }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor R$</span>
+                            </div>
+                            {% if i in entradas_com_pagamento %}
+                            <input type="text" value="{{ i.dvlrtotal }}" class="form-control" readonly>
+                            {% else %}
+                            <input type="number" name="dado_{{ i.pk }}" step="0.01" pattern="\d+(\.\d{2})?" min="0" value="{{ i.dvlrtotal }}" class="form-control">
+                            {% endif %}
+                        </div>
+                        <input type="hidden" name="id_crediario" value="{{ cred.pk }}">
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

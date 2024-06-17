@@ -1,0 +1,36 @@
+<div class="modal fade" id="modal-new-sangria" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sangria</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-sangria" action="{% url 'new_sangria' %}" method="POST" onsubmit="enviarFormulario('form-new-sangria'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <h2 class="saldo-title">SALDO CAIXA</h2>
+                    <div class="saldo-amount">R$ {% if caixa %}{{ caixa.dvlr }}{% else %}0.00{% endif %}</div>
+
+                    <h2 class="saldo-title mt-4">VALOR SANGRIA</h2>
+                    <div class="saldo-amount"><input type="number" id="dado_valor" name="dado_valor" class="form-control" step="0.01" pattern="\d+(\.\d{2})?" min="0"></div>
+
+                    <h2 class="saldo-title mt-4">CONTA DEPÓSITO</h2>
+                    <div class="saldo-amount">
+                        <select name="id_conta" id="id_conta" class="form-control">
+                            <option value=""></option>
+                            {% for obj in contas %}
+                            <option value="{{ obj.pk }}">{{ obj }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

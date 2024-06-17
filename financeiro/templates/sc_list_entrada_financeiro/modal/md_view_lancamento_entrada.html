@@ -1,0 +1,60 @@
+{% load i18n %}
+<div class="modal fade" id="modal-view-lancamento-entrada{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lançamento Financeiro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Número da Nota</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{% if pbj.numnota %}{{ obj.numnota }}{% else %}Sangria{% endif %}">
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Cód Cliente</span>
+                        </div>
+                        <input type="text" class="form-control cod" readonly value="{% if obj.fk_tbcli %}{{ obj.fk_tbcli.pk}}{% else %}0{% endif %}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">CLiente</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{% if obj.fk_tbcli %}{{ obj.fk_tbcli.dsc }}{% else %}Sem Cliente{% endif %}">
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Valor Total</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="R$ {{ obj.dvlrtotal }}">
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Status</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{{ obj.get_sts_display }}">
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Data de Emissão</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{{ obj.dtem|date:'d/m/Y H:i' }}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Data de Emissão</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{{ obj.dtem|date:'d/m/Y H:i' }}">
+                    </div>
+                </div>
+                
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>

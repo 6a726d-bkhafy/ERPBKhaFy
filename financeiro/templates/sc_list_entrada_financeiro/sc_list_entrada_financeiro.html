@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Contas a Receber</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Contas a Receber</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <a class="icon-tools btn btn-primary dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right dropdown-menu">
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-relatorio">
+                                    Relatório de Contas a Receber</a>
+                                </a>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="justify-content-end filtro">
+                                <a class="btn btn-primary filtro-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-filter-list-entrada-financeiro">Filtros</a>
+                                {% if filtrado %}
+                                <a href="{% url 'sc_list_entrada_financeiro' %}" class="btn btn-danger">Limpar Filtros</a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'pk' %}-pk{% else %}pk{% endif %}&search_numnota={{ request.GET.search_numnota }}&search_forn={{ request.GET.search_forn }}&search_eminicio={{ request.GET.search_eminicio }}&search_emfim={{ request.GET.search_emfim }}&search_vencinicio={{ request.GET.search_vencinicio }}&search_vencfim={{ request.GET.search_vencfim }}&search_pginicio={{ request.GET.search_pginicio }}&search_pgfim={{ request.GET.search_pgfim }}&search_status={{ request.GET.search_status }}">
+                                            Código
+                                            {% if request.GET.ordering == "pk" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-pk" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'numnota' %}-numnota{% else %}numnota{% endif %}&search_numnota={{ request.GET.search_numnota }}&search_forn={{ request.GET.search_forn }}&search_eminicio={{ request.GET.search_eminicio }}&search_emfim={{ request.GET.search_emfim }}&search_vencinicio={{ request.GET.search_vencinicio }}&search_vencfim={{ request.GET.search_vencfim }}&search_pginicio={{ request.GET.search_pginicio }}&search_pgfim={{ request.GET.search_pgfim }}&search_status={{ request.GET.search_status }}">
+                                            Número da Nota
+                                            {% if request.GET.ordering == "numnota" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-numnota" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dvlrtotal' %}-dvlrtotal{% else %}dvlrtotal{% endif %}&search_numnota={{ request.GET.search_numnota }}&search_forn={{ request.GET.search_forn }}&search_eminicio={{ request.GET.search_eminicio }}&search_emfim={{ request.GET.search_emfim }}&search_vencinicio={{ request.GET.search_vencinicio }}&search_vencfim={{ request.GET.search_vencfim }}&search_pginicio={{ request.GET.search_pginicio }}&search_pgfim={{ request.GET.search_pgfim }}&search_status={{ request.GET.search_status }}">
+                                            Valor Total
+                                            {% if request.GET.ordering == "dvlrtotal" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dvlrtotal" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'fk_tbcli__dsc' %}-fk_tbcli__dsc{% else %}fk_tbcli__dsc{% endif %}&search_numnota={{ request.GET.search_numnota }}&search_forn={{ request.GET.search_forn }}&search_eminicio={{ request.GET.search_eminicio }}&search_emfim={{ request.GET.search_emfim }}&search_vencinicio={{ request.GET.search_vencinicio }}&search_vencfim={{ request.GET.search_vencfim }}&search_pginicio={{ request.GET.search_pginicio }}&search_pgfim={{ request.GET.search_pgfim }}&search_status={{ request.GET.search_status }}">
+                                            Cliente
+                                            {% if request.GET.ordering == "fk_tbcli__dsc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-fk_tbcli__dsc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dtem' %}-dtem{% else %}dtem{% endif %}&search_numnota={{ request.GET.search_numnota }}&search_forn={{ request.GET.search_forn }}&search_eminicio={{ request.GET.search_eminicio }}&search_emfim={{ request.GET.search_emfim }}&search_vencinicio={{ request.GET.search_vencinicio }}&search_vencfim={{ request.GET.search_vencfim }}&search_pginicio={{ request.GET.search_pginicio }}&search_pgfim={{ request.GET.search_pgfim }}&search_status={{ request.GET.search_status }}">
+                                            Data de Emissão
+                                            {% if request.GET.ordering == "dtem" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dtem" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dtvenc' %}-dtvenc{% else %}dtvenc{% endif %}&search_numnota={{ request.GET.search_numnota }}&search_forn={{ request.GET.search_forn }}&search_eminicio={{ request.GET.search_eminicio }}&search_emfim={{ request.GET.search_emfim }}&search_vencinicio={{ request.GET.search_vencinicio }}&search_vencfim={{ request.GET.search_vencfim }}&search_pginicio={{ request.GET.search_pginicio }}&search_pgfim={{ request.GET.search_pgfim }}&search_status={{ request.GET.search_status }}">
+                                            Data de Vencimento
+                                            {% if request.GET.ordering == "dtvenc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dtvenc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'sts' %}-sts{% else %}sts{% endif %}&search_numnota={{ request.GET.search_numnota }}&search_forn={{ request.GET.search_forn }}&search_eminicio={{ request.GET.search_eminicio }}&search_emfim={{ request.GET.search_emfim }}&search_vencinicio={{ request.GET.search_vencinicio }}&search_vencfim={{ request.GET.search_vencfim }}&search_pginicio={{ request.GET.search_pginicio }}&search_pgfim={{ request.GET.search_pgfim }}&search_status={{ request.GET.search_status }}">
+                                            Status
+                                            {% if request.GET.ordering == "sts" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-sts" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.pk }}</td>
+                                    <td>{% if obj.numnota %}{{ obj.numnota }}{% else %}Sangria{% endif %}</td>
+                                    <td>R$ {{ obj.dvlrtotal }}</td>
+                                    <td>{% if obj.fk_tbcli %}{{ obj.fk_tbcli.dsc }}{% else %}Sem Cliente{% endif %}</td>
+                                    <td>{{ obj.dtem|date:'d/m/Y' }}</td>
+                                    <td>{{ obj.dtvenc|date:'d/m/Y' }}</td>
+                                    <td>{{ obj.get_sts_display }}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-lancamento-entrada{{ obj.pk }}">
+                                                    <i class="bi bi-eye-fill"></i> Visualizar Lançamento</a>
+                                                </a>
+                                                {% if obj.sts != '1' and obj.sts != '4' and obj.sts != '3' %}
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-pgdinheiro-venda{{ obj.pk }}">
+                                                    <i class="bi bi-currency-dollar"></i> Receber (Dinheiro)</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-pgcartao-venda{{ obj.pk }}">
+                                                    <i class="bi bi-currency-dollar"></i> Receber (Outros)</a>
+                                                </a>
+                                                {% endif %}
+                                                {% if obj.sts != '0' and obj in entradas_com_pagamento %}
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-pagamentos-entrada{{ obj.pk }}">
+                                                    <i class="bi bi-piggy-bank-fill"></i> Vizualizar Recebimentos</a>
+                                                </a>
+                                                {% endif %}
+                                                {% if obj.fk_tbicred and obj.sts != '3' %}
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-parcelas{{ obj.pk }}">
+                                                    <i class="bi bi-calendar4-week"></i> Parcelas do Crediário</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-parcelas{{ obj.pk }}">
+                                                    <i class="bi bi-cash-stack"></i> Alterar Valor da Parcela</a>
+                                                </a>
+                                                {% endif %}
+                                                {% if obj.sts == '0' or obj.sts == '2' or obj.sts == '4' %}
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-venc{{ obj.pk }}">
+                                                    <i class="bi bi-arrow-left-right"></i> Alterar Data de Vencimento</a>
+                                                </a>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="8" class="text-center">Nenhum registro a ser mostrado.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'sc_list_entrada_financeiro/modal/md_filter_list_entrada_financeiro.html' %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_relatorio.html' %}
+
+                        {% for obj in object_list %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_view_lancamento_entrada.html' %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_pgdinheiro_venda.html' %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_pgcartao_venda.html' %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_view_pagamentos_entrada.html' %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_view_parcelas.html' %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_new_venc.html' %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_edit_parcelas.html' %}
+                        {% endfor %}
+
+                        {% for pg in pgentrada %}
+                        {% include 'sc_list_entrada_financeiro/modal/md_estorno_pagamento.html' %}
+                        {% endfor %}
+
+                        {% include 'sc_list_entrada_financeiro/pagination/pg_list_entrada_financeiro.html' %}
+                                              
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/autocomplete-cliente-modal.js' %}"></script>
+<script src="{% static 'js/financeiro-troco.js' %}"></script>
+<script src="{% static 'js/hide-conta.js' %}"></script>
+<script src="{% static 'js/dif-parcela.js' %}"></script>
+{% endblock %}

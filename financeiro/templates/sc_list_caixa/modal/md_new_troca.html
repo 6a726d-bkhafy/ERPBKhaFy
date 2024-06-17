@@ -1,0 +1,45 @@
+<div class="modal fade" id="modal-new-troca{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Ordem de Troca</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-troca{{ obj.pk }}" action="{% url 'new_troca' %}" method="POST" onsubmit="enviarFormulario('form-new-troca{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        {% for prod in produtos %}
+                        {% if prod.fk_tbcx.pk == obj.pk %}
+                        {% if prod.sts == '0' or prod.sts == '5' %}
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Produto</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="{{ prod.fk_tbprod.dsc }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Qtd Vendida</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="{{ prod.qtd }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Qtd a ser Trocada</span>
+                            </div>
+                            <input type="number" name="dado_{{ prod.fk_tbprod }}_{{ prod.pk }}" min="0" max="{{ prod.qtd }}" class="form-control">
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <input type="hidden" name="id_caixa" value="{{ obj.pk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

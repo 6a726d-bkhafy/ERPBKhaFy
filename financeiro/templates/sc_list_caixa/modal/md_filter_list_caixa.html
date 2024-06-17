@@ -1,0 +1,68 @@
+<div class="modal fade" id="modal-filter-list-caixa" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filtros</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="get">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cód Vendedor</span>
+                            </div>
+                            <input type="number" name="search_func" id="id_usuario" min="0" class="form-control cod" value="{{ request.GET.search_func }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" id="dado_usuario_desc" class="form-control" value="{{ funcionario }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cód Cliente</span>
+                            </div>
+                            <input type="number" name="search_cli" id="id_cliente" min="0" class="form-control cod" value="{{ request.GET.search_cli }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" id="dado_cliente_desc" class="form-control" value="{{ cliente.dsc }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">De</span>
+                            </div>
+                            <input type="date" name="search_dtinicio" class="form-control" value="{{ request.GET.search_dtinicio }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Até</span>
+                            </div>
+                            <input type="date" name="search_dtfim" class="form-control" value="{{ request.GET.search_dtfim }}">
+                        </div>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Status</span>
+                        </div>
+                        <select name="search_status" class="form-control">
+                            <option value="">
+                                {% for sts in status %}
+                                {% if sts.0 == request.GET.search_status %}
+                                <option value="{{ sts.0 }}" selected>{{ sts.1 }}</option>
+                                {% else %}
+                                <option value="{{ sts.0 }}">{{ sts.1 }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </option>
+                        </select>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

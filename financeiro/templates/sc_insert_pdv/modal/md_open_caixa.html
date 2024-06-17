@@ -1,0 +1,23 @@
+<div class="modal fade" id="modal-open-caixa" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Abrir Caixa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-open-caixa" action="{% url 'open_caixa' %}" method="POST" onsubmit="enviarFormulario('form-open-caixa'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <h2 class="saldo-title">SALDO CAIXA</h2>
+                    <div class="saldo-amount">R$ {% if caixa %}{{ caixa.dvlr }}{% else %}0.00{% endif %}</div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

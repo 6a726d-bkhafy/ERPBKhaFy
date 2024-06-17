@@ -1,0 +1,57 @@
+{% load juros %}
+<div class="modal fade" id="modal-pgcartao-venda{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pagamento em Cartão/PIX</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-pgcartao-venda{{ obj.pk }}" action="{% url 'new_pagamento_entrada_outros' %}" method="POST" onsubmit="enviarFormulario('form-pgcartao-venda{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="saldo-title">VALOR A PAGAR</h2>
+                            <div class="saldo-amount" id="dado_total_cartao">R$ {{ obj.dtvenc|calc:obj.dvlrpend }}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Forma de Pagamento</span>
+                            </div>
+                            <select name="dado_tipopg" id="dado_tipopg" class="form-control" required> 
+                                <option value=""></option>
+                                {% for pg in tipopg %}
+                                <option value="{{ pg.pk }}">{{ pg.dsc }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor Pago R$</span>
+                            </div>
+                            <input type="number" class="form-control" name="dado_valor_pago" id="dado_valor_pago{{ obj.pk }}" step="0.01" pattern="\d+(\.\d{2})?" required oninput="handleInputChange('{{ obj.pk }}')">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Total de Juros por Atraso R$</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_juro" value="{{ obj.dtvenc|calc:obj.dvlrpend|sub:obj.dvlrpend }}" readonly>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="dado_total" value="{{ obj.dvlrpend }}">
+                    <input type="hidden" name="id_entrada" value="{{ obj.pk }}">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

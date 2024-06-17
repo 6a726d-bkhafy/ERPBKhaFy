@@ -1,0 +1,59 @@
+<div class="modal fade" id="modal-new-pagamento{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lançamento Financeiro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-pagamento{{ obj.pk }}" action="{% url 'new_pagamento' %}" method="POST" onsubmit="enviarFormulario('form-new-pagamento{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor Pendente da Nota</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="R$ {{ obj.dvlrpend }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor a Pagar R$</span>
+                            </div>
+                            <input type="number" class="form-control" id="dado_valor" name="dado_valor" step="0.01" pattern="\d+(\.\d{2})?" min="0" max="{{ obj.dvlrpend }}" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tipo de Pagamento</span>
+                            </div>
+                            <select name="dado_pg" id="dado_pg" class="form-control input-tipopg" required>
+                                <option value=""></option>
+                                {% for pg in pagamentos %}
+                                <option value="{{ pg.0 }}">{{ pg.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend title-conta">
+                                <span class="input-group-text">Conta Bancária</span>
+                            </div>
+                            <select name="id_conta" id="id_conta" class="form-control input-conta" required>
+                                <option value=""></option>
+                                {% for conta in contas %}
+                                <option value="{{ conta.pk }}">{{ conta }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="id_saida" id="id_saida" value="{{ obj.pk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
