@@ -1,0 +1,38 @@
+<div class="modal fade" id="modal-qtd-consignado{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alterar Quantidade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-qtd-consignado{{ obj.pk }}" action="{% url 'qtd_consignado' %}" method="POST" onsubmit="enviarFormulario('form-qtd-consignado{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Quantidade em Consignado</span>
+                            </div>
+                            <input type="text" class="form-control" value="{{ obj.qtdtotal }}" readonly>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Quantidade a ser Vendida</span>
+                            </div>
+                            <input type="number" class="form-control" name="dado_qtd" id="dado_qtd" min="1" max="{{ obj.qtdtotal }}" required>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="id_venda" value="{{ obj.pk }}">
+                    <input type="hidden" name="id_venda_consignado" value="{{ fk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

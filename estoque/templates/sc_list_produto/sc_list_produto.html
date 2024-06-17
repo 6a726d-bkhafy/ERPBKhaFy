@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Produtos</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Produtos</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-produto">Novo Produto</a>
+                            <a class="icon-tools btn btn-primary dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right dropdown-menu">
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-relatorio-estoque">
+                                    Relatório de Estoque
+                                </a>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-relatorio-consignado">
+                                    Relatório de Consignado
+                                </a>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="justify-content-end filtro">
+                                <a class="btn btn-primary filtro-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-filter-list-produto">Filtros</a>
+                                {% if filtrado %}
+                                <a href="{% url 'sc_list_produto' %}" class="btn btn-danger">Limpar Filtros</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'id' %}-id{% else %}id{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_cat={{ request.GET.search_cat }}&search_tam={{ request.GET.search_tam }}&search_precoinicio={{ request.GET.search_precoinicio }}&search_precofim={{ request.GET.search_precofim }}&search_estoque={{ request.GET.search_estoque }}&search_min={{ request.GET.search_min }}">
+                                            Código
+                                            {% if request.GET.ordering == "id" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-id" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dsc' %}-dsc{% else %}dsc{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_cat={{ request.GET.search_cat }}&search_tam={{ request.GET.search_tam }}&search_precoinicio={{ request.GET.search_precoinicio }}&search_precofim={{ request.GET.search_precofim }}&search_estoque={{ request.GET.search_estoque }}&search_min={{ request.GET.search_min }}">
+                                            Descrição
+                                            {% if request.GET.ordering == "dsc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dsc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'fk_ctbcatprod__dsc' %}-fk_ctbcatprod__dsc{% else %}fk_ctbcatprod__dsc{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_cat={{ request.GET.search_cat }}&search_tam={{ request.GET.search_tam }}&search_precoinicio={{ request.GET.search_precoinicio }}&search_precofim={{ request.GET.search_precofim }}&search_estoque={{ request.GET.search_estoque }}&search_min={{ request.GET.search_min }}">
+                                            CAT
+                                            {% if request.GET.ordering == "fk_ctbcatprod__dsc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-fk_ctbcatprod__dsc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'tam' %}-tam{% else %}tam{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_cat={{ request.GET.search_cat }}&search_tam={{ request.GET.search_tam }}&search_precoinicio={{ request.GET.search_precoinicio }}&search_precofim={{ request.GET.search_precofim }}&search_estoque={{ request.GET.search_estoque }}&search_min={{ request.GET.search_min }}">
+                                            TAM
+                                            {% if request.GET.ordering == "tam" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-tam" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'qtdestoque' %}-qtdestoque{% else %}qtdestoque{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_cat={{ request.GET.search_cat }}&search_tam={{ request.GET.search_tam }}&search_precoinicio={{ request.GET.search_precoinicio }}&search_precofim={{ request.GET.search_precofim }}&search_estoque={{ request.GET.search_estoque }}&search_min={{ request.GET.search_min }}">
+                                            QTD
+                                            {% if request.GET.ordering == "qtdestoque" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-qtdestoque" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dvlrcusto' %}-dvlrcusto{% else %}dvlrcusto{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_cat={{ request.GET.search_cat }}&search_tam={{ request.GET.search_tam }}&search_precoinicio={{ request.GET.search_precoinicio }}&search_precofim={{ request.GET.search_precofim }}&search_estoque={{ request.GET.search_estoque }}&search_min={{ request.GET.search_min }}">
+                                            Custo
+                                            {% if request.GET.ordering == "dvlrcusto" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dvlrcusto" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dvlrvenda' %}-dvlrvenda{% else %}dvlrvenda{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_cat={{ request.GET.search_cat }}&search_tam={{ request.GET.search_tam }}&search_precoinicio={{ request.GET.search_precoinicio }}&search_precofim={{ request.GET.search_precofim }}&search_estoque={{ request.GET.search_estoque }}&search_min={{ request.GET.search_min }}">
+                                            Venda
+                                            {% if request.GET.ordering == "dvlrvenda" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dvlrvenda" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.pk }}</td>
+                                    <td>{{ obj.dsc }}</td>
+                                    <td>{{ obj.fk_ctbcatprod.dsc }}</td>
+                                    <td>{{ obj.tam }}</td>
+                                    <td>{{ obj.qtdestoque }}</td>
+                                    <td>R$ {{ obj.dvlrcusto }}</td>
+                                    <td>R$ {{ obj.dvlrvenda }}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-produto{{ obj.pk }}">
+                                                    <i class="bi bi-pencil-fill"></i> Editar Produto</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-produto{{ obj.pk }}">
+                                                    <i class="bi bi-eye-fill"></i> Visualizar Produto</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-custo{{ obj.pk }}">
+                                                    <i class="bi bi-currency-dollar"></i> Alterar Preço de Custo</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-preco{{ obj.pk }}">
+                                                    <i class="bi bi-currency-dollar"></i> Alterar Preço de Venda</a>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'sc_list_produto/modal/md_edit_produto.html' %}
+                                {% include 'sc_list_produto/modal/md_view_produto.html' %}
+                                {% include 'sc_list_produto/modal/md_edit_custo.html' %}
+                                {% include 'sc_list_produto/modal/md_edit_preco.html' %}
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="7" class="text-center">Nenhum registro a ser mostrado.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'sc_list_produto/pagination/pg_list_produto.html' %}
+                                              
+                    </div>
+
+                    {% include 'sc_list_produto/modal/md_new_produto.html' %}
+                    {% include 'sc_list_produto/modal/md_filter_list_produto.html' %}
+                    {% include 'sc_list_produto/modal/md_relatorio_estoque.html' %}
+                    {% include 'sc_list_produto/modal/md_relatorio_consignado.html' %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

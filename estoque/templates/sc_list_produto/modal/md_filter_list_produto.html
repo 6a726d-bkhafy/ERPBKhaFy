@@ -1,0 +1,70 @@
+<div class="modal fade" id="modal-filter-list-produto" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filtros</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="get">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código</span>
+                            </div>
+                            <input type="number" name="search_id" class="form-control" value="{{ request.GET.search_id }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" name="search_desc" class="form-control" value="{{ request.GET.search_desc }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Categoria</span>
+                            </div>
+                            <input type="text" name="search_cat" class="form-control" value="{{ request.GET.search_cat }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tamanho</span>
+                            </div>
+                            <input type="text" name="search_tam" class="form-control" value="{{ request.GET.search_tam }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Preço:</span>
+                            </div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">De</span>
+                            </div>
+                            <input type="number" name="search_precoinicio" class="form-control" step="0.01" pattern="\d+(\.\d{2})?" value="{{ request.GET.search_precoinicio }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Até</span>
+                            </div>
+                            <input type="number" name="search_precofim" class="form-control" step="0.01" pattern="\d+(\.\d{2})?" value="{{ request.GET.search_precofim }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="mt-2 col-6">
+                            <input type="checkbox" class="checkboxinput form-check-input" name="search_estoque">
+                            <label>Em estoque</label>
+                        </div>
+                        <div class="mt-2 col-6">
+                            <input type="checkbox" class="checkboxinput form-check-input" name="search_min">
+                            <label>Abaixo do estoque mínimo</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

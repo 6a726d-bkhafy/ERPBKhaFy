@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+<title>Consignados</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Consignados</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <div class="justify-content-end filtro">
+                                <a class="btn btn-primary filtro-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-filter-list-consignado">Filtros</a>
+                                {% if filtrado %}
+                                <a href="{% url 'sc_list_consignado' %}" class="btn btn-danger">Limpar Filtros</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'pk' %}-pk{% else %}pk{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Código
+                                            {% if request.GET.ordering == "pk" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-pk" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'fk_tbpar_cli__desc' %}-fk_tbpar_cli__desc{% else %}fk_tbpar_cli__desc{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Cliente
+                                            {% if request.GET.ordering == "fk_tbpar_cli__desc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-fk_tbpar_cli__desc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'fk_tbpar_func__desc' %}-fk_tbpar_func__desc{% else %}fk_tbpar_func__desc{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Funcionário
+                                            {% if request.GET.ordering == "fk_tbpar_func__desc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-fk_tbpar_func__desc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'qtd' %}-qtd{% else %}qtd{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Quantidade de Itens
+                                            {% if request.GET.ordering == "qtd" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-qtd" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dtinicio' %}-dtinicio{% else %}dtinicio{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Data de Retirada
+                                            {% if request.GET.ordering == "dtinicio" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dtinicio" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dtfim' %}-dtfim{% else %}dtfim{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Data de Devolução
+                                            {% if request.GET.ordering == "dtfim" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dtfim" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'status' %}-status{% else %}status{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Status
+                                            {% if request.GET.ordering == "status" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-status" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.pk }}</td>
+                                    <td>{{ obj.fk_tbcli.dsc }}</td>
+                                    <td>{{ obj.fk_user.first_name }} {{ obj.fk_user.last_name }}</td>
+                                    <td>{{ obj.qtd }}</td>
+                                    <td>{{ obj.dtinicio|date:'d/m/Y H:i' }}</td>
+                                    <td>{{ obj.dtfim|date:'d/m/Y' }}</td>
+                                    <td>{{ obj.get_sts_display }}</td>
+
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-produto-consignado{{ obj.pk }}">
+                                                    <i class="bi bi-eye-fill"></i> Visualizar Produtos</a>
+                                                </a>
+                                                {% if obj.sts != '2' %}
+                                                <a class="dropdown-item" href="{% url 'sc_insert_consignado' obj.pk %}">
+                                                    <i class="bi bi-currency-dollar"></i> Realizar Venda</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-devolucao-consignado{{ obj.pk }}">
+                                                    <i class="bi bi-box-arrow-in-right"></i> Devolver Produtos</a>
+                                                </a>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'sc_list_consignado/modal/md_devolucao_consignado.html' %}
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="8" class="text-center">Nenhum registro a ser mostrado.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% for obj in object_list %}
+                        {% language 'pt-br' %} 
+                        {% include 'sc_list_consignado/modal/md_view_produto_consignado.html' %}
+                        {% endlanguage %}
+                        {% endfor %}
+
+                        {% include 'sc_list_consignado/modal/md_filter_list_consignado.html' %}
+
+                        {% include 'sc_list_consignado/pagination/pg_list_consignado.html' %}
+                                              
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/autocomplete-usuario-modal.js' %}"></script>
+<script src="{% static 'js/autocomplete-cliente-modal.js' %}"></script>
+{% endblock %}

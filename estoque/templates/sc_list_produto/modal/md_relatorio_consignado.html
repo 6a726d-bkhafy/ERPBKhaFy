@@ -1,0 +1,23 @@
+{% load linhas %}
+<div class="modal fade" id="modal-relatorio-consignado" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gerar Relatório de Consignado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-relatorio-consignado" action="{% url 'relatorio_consignado' %}" method="POST" onsubmit="enviarFormularioPDF('form-relatorio-consignado'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    Será gerado um relatório contendo {{ 2|cont }} linhas!
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="modal fade" id="modal-devolucao-consignado{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Devolução de Produtos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-devolucao-consignado{{ obj.pk }}" action="{% url 'devolucao_consignado' %}" method="POST" onsubmit="enviarFormulario('form-devolucao-consignado{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        {% for prod in produtos %}
+                        {% if prod.fk_tbcsg.pk == obj.pk and prod.qtd > 0 and prod.sts == '0' %}
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Produto</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="{{ prod.fk_tbprod.dsc }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Em Consignado</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="{{ prod.qtd }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Qtd a Devolver</span>
+                            </div>
+                            <input type="number" name="dado_{{ prod.pk }}" min="0" max="{{ prod.qtdcsg }}" class="form-control">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <input type="hidden" name="id_consignado" value="{{ obj.pk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

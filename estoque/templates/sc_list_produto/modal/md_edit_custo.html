@@ -1,0 +1,37 @@
+<div class="modal fade" id="modal-edit-custo{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alterar Custo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-edit-custo{{ obj.pk }}" action="{% url 'change_custo' %}" method="POST" onsubmit="enviarFormulario('form-edit-custo{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Custo Atual</span>
+                            </div>
+                            <input type="text" class="form-control" value="R$ {{ obj.dvlrcusto }}" readonly>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Novo Custo R$</span>
+                            </div>
+                            <input type="number" class="form-control" name="dado_custo" id="dado_custo" step="0.01" pattern="\d+(\.\d{2})?" min="0" required>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="id_produto" value="{{ obj.pk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

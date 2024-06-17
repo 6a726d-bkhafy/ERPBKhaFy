@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+<title>Troca de Produto</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Troca de Produto</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <div class="justify-content-end filtro">
+                                <a class="btn btn-primary filtro-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-filter-list-troca">Filtros</a>
+                                {% if filtrado %}
+                                <a href="{% url 'sc_list_troca' %}" class="btn btn-danger">Limpar Filtros</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'pk' %}-pk{% else %}pk{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Código
+                                            {% if request.GET.ordering == "pk" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-pk" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'fk_tbpar__desc' %}-fk_tbpar__desc{% else %}fk_tbpar__desc{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Cliente
+                                            {% if request.GET.ordering == "fk_tbpar__desc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-fk_tbpar__desc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dvlr' %}-dvlr{% else %}dvlr{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Valor Total
+                                            {% if request.GET.ordering == "dvlr" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dvlr" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'fk_tbcx_entrada__pk' %}-fk_tbcx_entrada__pk{% else %}fk_tbcx_entrada__pk{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Cód Mov Caixa
+                                            {% if request.GET.ordering == "fk_tbcx_entrada__pk" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-fk_tbcx_entrada__pk" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dt' %}-dt{% else %}dt{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Data da Troca
+                                            {% if request.GET.ordering == "dt" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dt" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'sts' %}-sts{% else %}sts{% endif %}&search_cli={{ request.GET.search_cli }}&search_func={{ request.GET.search_func }}&search_retiradainicio={{ request.GET.search_retiradainicio }}&search_retiradafim={{ request.GET.search_retiradafim }}&search_devinicio={{ request.GET.search_devinicio }}&search_devfim={{ request.GET.search_devfim }}">
+                                            Status                                            
+                                            {% if request.GET.ordering == "sts" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-sts" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr data-toggle="table-{{ obj.pk }}">
+                                    <td>{{ obj.pk }}</td>
+                                    <td>{{ obj.fk_tbcli.dsc }}</td>
+                                    <td>R$ {{ obj.dvlr }}</td>
+                                    <td>{{ obj.fk_tbcx_entrada.pk }}</td>
+                                    <td>{{ obj.dt|date:'d/m/Y H:i' }}</td>
+                                    <td>{{ obj.get_sts_display }}</td>
+
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-produto-troca{{ obj.pk }}">
+                                                    <i class="bi bi-eye-fill"></i> Visualizar Produtos</a>
+                                                </a>
+                                                {% if obj.sts != '1' %}
+                                                <a class="dropdown-item" href="{% url 'sc_insert_troca' obj.pk %}">
+                                                    <i class="bi bi-currency-dollar"></i> Realizar Venda</a>
+                                                </a>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr id="table-{{ obj.pk }}" class="table-detail collapse">
+                                    <td colspan="7">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-secondary">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Cód Produto</th>
+                                                        <th scope="col">Descrição</th>
+                                                        <th scope="col">Valor Unitário</th>
+                                                        <th scope="col">Quantidade</th>
+                                                        <th scope="col">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for prod in produtos %}
+                                                    {% if obj.pk == prod.fk_tbtprod.pk %}
+                                                    <tr>
+                                                        <td>{{ prod.fk_tbprod.pk }}</td>
+                                                        <td>{{ prod.fk_tbprod.dsc }}</td>
+                                                        <td>{{ prod.dvlr }}</td>
+                                                        <td>{{ prod.qtd }}</td>
+                                                        <td>{{ prod.get_sts_display }}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% empty %}
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">Nenhum registro a ser mostrado.</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="7" class="text-center">Nenhum registro a ser mostrado.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% for obj in object_list %}
+                        {% language 'pt-br' %} 
+                        {% include 'sc_list_troca/modal/md_view_produto_troca.html' %}
+                        {% endlanguage %}
+                        {% endfor %}
+
+                        {% include 'sc_list_troca/modal/md_filter_list_troca.html' %}
+
+                        {% include 'sc_list_consignado/pagination/pg_list_consignado.html' %}
+                                              
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const rows = document.querySelectorAll('tr[data-toggle]');
+    const icons = document.querySelectorAll('.icon');
+
+    rows.forEach(row => {
+        row.addEventListener('click', function () {
+            const detailId = this.getAttribute('data-toggle');
+            const detailElement = document.getElementById(detailId);
+            if (detailElement.classList.contains('collapse')) {
+                detailElement.classList.remove('collapse');
+            } else {
+                detailElement.classList.add('collapse');
+            }
+        });
+    });
+
+    icons.forEach(icon => {
+        icon.addEventListener('click', function (event) {
+            event.stopPropagation(); // Impede que o evento suba para a linha da tabela
+        });
+    });
+
+});
+</script>
+<script src="{% static 'js/autocomplete-funcionario-modal.js' %}"></script>
+<script src="{% static 'js/autocomplete-cliente-modal.js' %}"></script>
+{% endblock %}

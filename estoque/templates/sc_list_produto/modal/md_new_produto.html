@@ -1,0 +1,64 @@
+<div class="modal fade" id="modal-new-produto" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Produto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-produto" action="{% url 'new_produto' %}" method="POST" onsubmit="enviarFormulario('form-new-produto'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_desc" name="dado_desc" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tamanho</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_tam" name="dado_tam" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Categoria</span>
+                            </div>
+                            <select name="id_categoria" id="id_categoria" class="form-control" required>
+                                <option value=""></option>
+                                {% for categoria in categorias %}
+                                <option value="{{ categoria.pk }}">{{ categoria.dsc }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Estoque Mínimo</span>
+                            </div>
+                            <input type="number" class="form-control" id="dado_min" name="dado_min" min="0" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Margem Mínima de Venda %</span>
+                            </div>
+                            <input type="number" class="form-control" id="dado_margem" name="dado_margem" step="0.01" pattern="\d+(\.\d{2})?" min="0" max="100" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">NCM</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ncm" name="dado_ncm" required>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        Enviar Imagem do Produto
+                        <input type="file" class="clearablefileinput form-control-file" name="dado_img" id="dado_img">
+                    </div>
+                    
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

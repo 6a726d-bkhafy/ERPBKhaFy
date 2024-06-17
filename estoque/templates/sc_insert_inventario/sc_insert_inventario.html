@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Gerar Inventário</title>
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container-flex">
+        <div class="card mb-3">
+            <div class="card-body col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-primary mt-4" href="{% url 'sc_list_inventario' %}"><i class="bi bi-arrow-left-square"></i> Voltar</a>
+                        <div class="pt-1 pb-4 title-container pagetitle">
+                            <h5 class="text-center title-text mt-4">Gerar Inventário</h5>
+                        </div>
+
+                        <form class="row g-3 needs-validation" action="{% url 'new_inventario' %}" method="POST" id="formulario" onsubmit="enviarFormulario('formulario'); return false;">
+        
+                            {% csrf_token %}
+            
+                            <div class="form-group">
+                                <label class="requiredField">Produto</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Código</span>
+                                    </div>
+                                    <input type="number" class="form-control required-border" id="id_produto" name="id_produto" min="0" required>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Descrição</span>
+                                    </div>
+                                    <input type="text" class="form-control required-border" id="dado_produto_desc" name="dado_produto_desc" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary w-100" type="submit">Adicionar</button>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="total-container justify-content-end">
+                        <div>
+                            <a class="btn btn-danger-insert" href="#" data-bs-toggle="modal" data-bs-target="#modal-clear-inventario">Limpar</a>
+                            {% if object_list %}
+                            <a class="btn btn-success-insert" href="#" data-bs-toggle="modal" data-bs-target="#modal-confirm-inventario">Confirmar</a>
+                            {% else %}
+                            <a class="btn btn-success-insert" href="#">Confirmar</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="table-responsive">            
+                        <table class="table table-hover" id="tabela">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cód Produto</th>
+                                    <th scope="col">Descrição</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Quantidade Atual</th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.fk_tbprod.pk }}</td>
+                                    <td>{{ obj.fk_tbprod.dsc }}</td>
+                                    <td>{{ obj.qtdcont }}</td>
+                                    <td>{{ obj.fk_tbprod.qtdestoque }}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-delete-inventario{{ obj.id }}">
+                                                    <i class="bi bi-trash"></i> Remover Produto</a>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'sc_insert_inventario/modal/md_delete_inventario.html' %}
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'sc_insert_inventario/pagination/pg_insert_inventario.html' %}
+
+                        {% include 'sc_insert_inventario/modal/md_clear_inventario.html' %}
+                        {% include 'sc_insert_inventario/modal/md_confirm_inventario.html' %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/autocomplete-produto.js' %}"></script>
+<script src="{% static 'js/focus-produto.js' %}"></script>
+<script src="{% static 'js/enter-produto.js' %}"></script>
+{% endblock %}

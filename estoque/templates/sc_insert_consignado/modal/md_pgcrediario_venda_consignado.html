@@ -1,0 +1,74 @@
+<div class="modal fade" id="modal-pgcrediario-venda" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pagamento em Crediário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-pgcrediario-venda" action="{% url 'pgcrediario_venda' %}" method="POST" onsubmit="enviarFormulario('form-pgcrediario-venda'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2 class="saldo-title">VALOR A PAGAR</h2>
+                            <div class="saldo-amount" id="dado_total_cred">R$ {{ total }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <h2 class="saldo-title">VALOR DA PARCELA</h2>
+                            <div class="saldo-amount-troco" id="dado_valor_parcela" name="dado_valor_parcela">R$ 0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código</span>
+                            </div>
+                            <input type="number" class="form-control cod" name="id_usuario" id="id_usuario_cred" min="0" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Vendedor</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_usuario_desc" id="dado_usuario_desc_cred" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Parcelas</span>
+                            </div>
+                            <select name="dado_parcela" id="dado_parcela" class="form-control" required oninput="handleInputChangeCred()">
+                                <option value=""></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                            <div class="input-group mt-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Primeira Parcela</span>
+                                </div>
+                                <input type="date" class="form-control" name="dado_data" id="dado_data" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="dado_total" value="{{ total }}">
+                    <input type="hidden" name="id_venda_consignado" value="{{ fk }}">
+                    <input type="hidden" class="form-control cod" name="id_cliente" value="{{ consignado.0.fk_tbcli.pk }}">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

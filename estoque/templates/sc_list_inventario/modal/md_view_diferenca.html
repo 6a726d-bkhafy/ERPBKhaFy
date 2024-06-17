@@ -1,0 +1,47 @@
+<div class="modal fade" id="modal-view-diferenca{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Diferenças</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Cód Produto</th>
+                                <th scope="col">Descrição</th>
+                                <th scope="col">QTD Estoque</th>
+                                <th scope="col">QTD Contada</th>
+                                <th scope="col">Diferença</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for dif in diferencas %}
+                            {% if obj == dif.fk_tbinv %}
+                            <tr>
+                                <td>{{ dif.fk_tbprod.pk }}</td>
+                                <td>{{ dif.fk_tbprod.dsc }}</td>
+                                <td>{{ dif.qtdestoque }}</td>
+                                <td>{{ dif.qtdcont }}</td>
+                                <td>{{ dif.dif }}</td>
+                            </tr>
+                            {% endif %}
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">Nenhum registro a ser mostrado.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>             
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
