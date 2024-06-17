@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Usuários</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Usuários</h1>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="row">
+
+                <div class="col-md-12 mb-4">
+                    <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-user">Novo Usuário</a>
+                </div>
+
+                {% for obj in object_list %}
+                <div class="col-xxl-4 col-xl-12">
+
+                    <div class="card info-card customers-card">
+
+                        {% if obj.username != 'admin' %}
+
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <li class="dropdown-header text-start">
+                                    <h6>Opções</h6>
+                                </li>
+
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-user{{ obj.pk }}">Editar Usuário</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-acessos-user{{ obj.pk }}">Definir Acessos</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-password{{ obj.pk }}">Redefinir Senha</a></li>
+                            </ul>
+                        </div>
+
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ obj.first_name }} {{ obj.last_name }}<span>| {{ obj.pk }}</span></h5>
+
+                            <div class="d-flex align-items-center">
+                                {% for profile in profiles %}
+                                {% if obj.pk == profile.fk_user_id %}
+                                <div class="image-container">
+                                    <img src="{{ profile.avatar.url }}" alt="Profile" class="rounded-circle list-users">
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                
+                                <div class="ps-3">
+                                    <h6>{{ obj.username }}</h6>
+                                    <span class="text-danger small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1">{{ obj.email }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% include 'sc_list_user/modal/md_edit_user.html' %}
+                {% include 'sc_list_user/modal/md_new_password.html' %}
+                {% include 'sc_list_user/modal/md_acessos_user.html' %}
+
+                {% endfor %}
+
+                {% include 'sc_list_user/modal/md_new_user.html' %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

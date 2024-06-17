@@ -1,0 +1,250 @@
+{% load permission %}
+<div class="modal fade" id="modal-acessos-user{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Definir Acessos Para {{ obj.first_name }} {{ obj.last_name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-acessos-user{{ obj.pk }}" action="{% url 'acessos_user' %}" method="POST" onsubmit="enviarFormulario('form-acessos-user{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+
+                        <ul class="sidebar-nav nav-modal" id="sidebar-nav">
+                
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-target="#estoque-nav-md" data-bs-toggle="collapse" href="#">
+                                    <i class="bi bi-box2"></i><span>Estoque</span><i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <ul id="estoque-nav-md" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                    <li>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'estoque.view_consignado' %}
+                                            <input class="form-check-input" type="checkbox" name="check_consignado" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_consignado">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Consignado</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'estoque.view_etiquetas' %}
+                                            <input class="form-check-input" type="checkbox" name="check_etiquetas" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_etiquetas">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Etiquetas</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'estoque.view_inventarios' %}
+                                            <input class="form-check-input" type="checkbox" name="check_inventarios" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_inventarios">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Inventários</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'estoque.view_produtos' %}
+                                            <input class="form-check-input" type="checkbox" name="check_produtos" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_produtos">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Produtos</label>
+                                        </div>  
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'compras.view_lote' %}
+                                            <input class="form-check-input" type="checkbox" name="check_lote" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_lote">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Lote de Produção</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-target="#financeiro-nav-md" data-bs-toggle="collapse" href="#">
+                                    <i class="bi bi-bank"></i><span>Financeiro</span><i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <ul id="financeiro-nav-md" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                    <li>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'financeiro.view_saida' %}
+                                            <input class="form-check-input" type="checkbox" name="check_saida" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_saida">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Contas a Pagar</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'financeiro.view_entrada' %}
+                                            <input class="form-check-input" type="checkbox" name="check_entrada" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_entrada">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Contas a Receber</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'financeiro.view_transf' %}
+                                            <input class="form-check-input" type="checkbox" name="check_transf" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_transf">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Transferência Entre Contas</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-target="#pdv-nav-md" data-bs-toggle="collapse" href="#">
+                                    <i class="bi bi-shop"></i><span>Vendas</span><i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <ul id="pdv-nav-md" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                    <li>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'financeiro.view_pdv' %}
+                                            <input class="form-check-input" type="checkbox" name="check_pdv" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_pdv">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">PDV / Agenda</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'financeiro.view_troca' %}
+                                            <input class="form-check-input" type="checkbox" name="check_troca" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_troca">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Troca de Produto</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'financeiro.view_caixa' %}
+                                            <input class="form-check-input" type="checkbox" name="check_caixa" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_caixa">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Movimentação de Caixa</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-target="#compras-nav-md" data-bs-toggle="collapse" href="#">
+                                    <i class="bi bi-cart4"></i><span>Compras</span><i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <ul id="compras-nav-md" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                    <li>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'compras.view_compra' %}
+                                            <input class="form-check-input" type="checkbox" name="check_compras" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_compras">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Ordem de Compra / Agenda</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-target="#parceiros-nav-md" data-bs-toggle="collapse" href="#">
+                                    <i class="bi bi-people"></i><span>Parceiros</span><i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <ul id="parceiros-nav-md" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                    <li>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'parceiros.view_clientes' %}
+                                            <input class="form-check-input" type="checkbox" name="check_clientes" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_clientes">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Clientes</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'parceiros.view_fornecedores' %}
+                                            <input class="form-check-input" type="checkbox" name="check_fornecedores" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_fornecedores">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Fornecedores</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" data-bs-target="#configuracoes-nav-md" data-bs-toggle="collapse" href="#">
+                                    <i class="bi bi-gear"></i><span>Configurações</span><i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <ul id="configuracoes-nav-md" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                    <li>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'cfg.view_categorias' %}
+                                            <input class="form-check-input" type="checkbox" name="check_categorias" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_categorias">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Categorias de Produto</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'cfg.view_contas' %}
+                                            <input class="form-check-input" type="checkbox" name="check_contas" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_contas">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Contas Bancárias</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'cfg.view_juros' %}
+                                            <input class="form-check-input" type="checkbox" name="check_juros" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_juros">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Tabela de Juros</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'cfg.view_custos' %}
+                                            <input class="form-check-input" type="checkbox" name="check_custos" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_custos">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Tipos de Custo</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'cfg.view_pagamentos' %}
+                                            <input class="form-check-input" type="checkbox" name="check_pagamentos" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_pagamentos">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Tipos de Pagamento</label>
+                                        </div>
+                                        <div class="form-check form-switch mt-2">
+                                            {% if obj|check:'cfg.view_usuarios' %}
+                                            <input class="form-check-input" type="checkbox" name="check_usuarios" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="checkbox" name="check_usuarios">
+                                            {% endif %}
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Usuários</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    
+                    </div>
+
+                    <input type="hidden" id="id_user" name="id_user" value="{{ obj.pk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

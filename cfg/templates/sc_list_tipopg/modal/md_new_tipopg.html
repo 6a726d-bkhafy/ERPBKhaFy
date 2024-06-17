@@ -1,0 +1,40 @@
+<div class="modal fade" id="modal-new-tipopg" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Categoria</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-tipopg" action="{% url 'new_tipopg' %}" method="POST" onsubmit="enviarFormulario('form-new-tipopg'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_dsc" name="dado_dsc" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Conta Bancária</span>
+                            </div>
+                            <select name="id_conta" id="id_conta" class="form-control" required>
+                                <option value=""></option>
+                                {% for conta in contas %}
+                                <option value="{{ conta.pk }}">{{ conta }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

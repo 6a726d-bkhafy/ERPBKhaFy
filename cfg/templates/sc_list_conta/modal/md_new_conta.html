@@ -1,0 +1,53 @@
+<div class="modal fade" id="modal-new-conta" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Conta Bancária</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-conta" action="{% url 'new_conta' %}" method="POST" onsubmit="enviarFormulario('form-new-conta'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Razão</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_razao" name="dado_razao" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Banco</span>
+                            </div>
+                            <select name="dado_banco" id="dado_banco" class="form-control" required>
+                                {% for banco in bancos %}
+                                <option value="{{ banco.0 }}">{{ banco.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Agência</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_agencia" name="dado_agencia" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Conta</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_conta" name="dado_conta" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">PIX</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_pix" name="dado_pix">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

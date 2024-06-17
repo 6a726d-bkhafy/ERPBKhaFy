@@ -1,0 +1,31 @@
+class Lists:
+
+    list_bancos = (
+        ('', ''),
+        ('756', '756 - BANCO COOPERATIVO DO BRASIL S.A. (SICOOB)'),
+        ('197', '197 - Stone Pagamentos S.A.'),
+        ('260', '260 - Nu Pagamentos S.A.'),
+        ('323', '323 - MercadoPago IP LTDA'),
+        ('001', '001 - Banco do Brasil S.A.'),
+        ('033', '033 - Banco Santander (Brasil) S.A.'),
+        ('104', '104 - Caixa Econômica Federal'),
+        ('237', '237 - Banco Bradesco S.A.'),
+        ('341', '341 - Banco Itaú S.A.'),
+        ('356', '356 - Banco Real S.A. (antigo)'),
+        ('389', '389 - Banco Mercantil do Brasil S.A.'),
+        ('422', '422 - Banco Safra S.A.'),
+        ('652', '652 - Itaú Unibanco Holding S.A.'),
+        ('745', '745 - Banco Citibank S.A.'),
+        ('318', '318 - Banco BMG S.A.'),
+        ('204', '204 - Banco Bradesco Cartões S.A.'),
+        ('040', '040 - Banco Cargill S.A.'),
+        ('505', '505 - Banco Credit Suisse (Brasil) S.A.'),
+        ('184', '184 - Banco Itaú BBA S.A.'),
+        ('479', '479 - Banco ItaúBank S.A'),
+        ('M09', 'M09 - Banco Itaucred Financiamentos S.A.'),
+        ('477', '477 - Citibank N.A.'),
+        ('062', '062 - Hipercard Banco Múltiplo S.A.'),
+        ('409', '409 - UNIBANCO - União de Bancos Brasileiros S.A.'),
+        ('230', '230 - Unicard Banco Múltiplo S.A.'),
+        ('380', '380 - Picpay Bank')
+    )

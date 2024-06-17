@@ -1,0 +1,52 @@
+<div class="modal fade" id="modal-filter-list-conta" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filtros</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="get">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Razão</span>
+                            </div>
+                            <input type="text" name="search_razao" class="form-control" value="{{ request.GET.search_razao }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Banco</span>
+                            </div>
+                            <input type="text" name="search_banco" class="form-control" value="{{ request.GET.search_banco }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Agência</span>
+                            </div>
+                            <input type="text" name="search_ag" class="form-control" value="{{ request.GET.search_ag }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Conta</span>
+                            </div>
+                            <input type="text" name="search_conta" class="form-control" value="{{ request.GET.search_conta }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">PIX</span>
+                            </div>
+                            <input type="text" name="search_pix" class="form-control" value="{{ request.GET.search_pix }}">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

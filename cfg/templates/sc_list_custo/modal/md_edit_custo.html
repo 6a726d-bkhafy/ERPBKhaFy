@@ -1,0 +1,31 @@
+<div class="modal fade" id="modal-edit-custo{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Tipo de Custo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-edit-custo{{ obj.pk }}" action="{% url 'edit_custo' %}" method="POST" onsubmit="enviarFormulario('form-edit-custo{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" class="textinput textInput form-control" id="dado_dsc" name="dado_dsc" value="{{ obj.dsc }}" required>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="id_custo" name="id_custo" value="{{ obj.pk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

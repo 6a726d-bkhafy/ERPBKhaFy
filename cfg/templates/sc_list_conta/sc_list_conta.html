@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Contas Bancárias</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Contas Bancárias</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-conta">Nova Conta Bancária</a>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <form method="get">
+                                <div class="justify-content-end filtro">
+                                    <a class="btn btn-primary filtro-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-filter-list-conta">Filtros</a>
+                                    {% if filtrado %}
+                                    <a href="{% url 'sc_list_conta' %}" class="btn btn-danger">Limpar Filtros</a>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'razao' %}-razao{% else %}razao{% endif %}&search_razao={{ request.GET.search_razao }}&search_banco={{ request.GET.search_banco }}&search_ag={{ request.GET.search_ag }}&search_conta={{ request.GET.search_conta }}&search_pix={{ request.GET.search_pix }}">
+                                            Razão
+                                            {% if request.GET.ordering == "razao" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-razao" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'banco' %}-banco{% else %}banco{% endif %}&search_razao={{ request.GET.search_razao }}&search_banco={{ request.GET.search_banco }}&search_ag={{ request.GET.search_ag }}&search_conta={{ request.GET.search_conta }}&search_pix={{ request.GET.search_pix }}">
+                                            Banco
+                                            {% if request.GET.ordering == "banco" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-banco" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'ag' %}-ag{% else %}ag{% endif %}&search_razao={{ request.GET.search_razao }}&search_banco={{ request.GET.search_banco }}&search_ag={{ request.GET.search_ag }}&search_conta={{ request.GET.search_conta }}&search_pix={{ request.GET.search_pix }}">
+                                            Agência
+                                            {% if request.GET.ordering == "ag" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-ag" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'conta' %}-conta{% else %}conta{% endif %}&search_razao={{ request.GET.search_razao }}&search_banco={{ request.GET.search_banco }}&search_ag={{ request.GET.search_ag }}&search_conta={{ request.GET.search_conta }}&search_pix={{ request.GET.search_pix }}">
+                                            Conta
+                                            {% if request.GET.ordering == "conta" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-conta" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'pix' %}-pix{% else %}pix{% endif %}&search_razao={{ request.GET.search_razao }}&search_banco={{ request.GET.search_banco }}&search_ag={{ request.GET.search_ag }}&search_conta={{ request.GET.search_conta }}&search_pix={{ request.GET.search_pix }}">
+                                            PIX
+                                            {% if request.GET.ordering == "pix" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-pix" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.razao }}</td>
+                                    <td>{{ obj.get_banco_display }}</td>
+                                    <td>{{ obj.ag }}</td>
+                                    <td>{{ obj.conta }}</td>
+                                    <td>{% if obj.pix %}{{ obj.pix }}{% endif %}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-conta{{ obj.pk }}">
+                                                    <i class="bi bi-pencil-fill"></i> Editar</a>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'sc_list_conta/modal/md_edit_conta.html' %}
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="6" class="text-center">Nenhum registro a ser mostrado.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'sc_list_conta/pagination/pg_list_conta.html' %}
+                                              
+                    </div>
+
+                    {% include 'sc_list_conta/modal/md_new_conta.html' %}
+                    {% include 'sc_list_conta/modal/md_filter_list_conta.html' %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

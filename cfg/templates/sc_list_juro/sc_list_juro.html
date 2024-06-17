@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Tabela de Juros</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Tabela de Juros</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+                        {% if not juro %}
+                        <div class="col-md-12">
+                            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-juro">Nova Porcentagem de Juro</a>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'porc' %}-porc{% else %}porc{% endif %}">
+                                            Porcentagem %
+                                            {% if request.GET.ordering == "porc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-porc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.pvlr }}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-juro{{ obj.pk }}">
+                                                    <i class="bi bi-pencil-fill"></i> Editar</a>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'sc_list_juro/modal/md_edit_juro.html' %}
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="2" class="text-center">Nenhum registro a ser mostrado.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'sc_list_juro/pagination/pg_list_juro.html' %}
+                                              
+                    </div>
+
+                    {% include 'sc_list_juro/modal/md_new_juro.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

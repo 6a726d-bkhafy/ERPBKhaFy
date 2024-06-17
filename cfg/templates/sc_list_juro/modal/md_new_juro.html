@@ -1,0 +1,29 @@
+<div class="modal fade" id="modal-new-juro" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Categoria</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-juro" action="{% url 'new_juro' %}" method="POST" onsubmit="enviarFormulario('form-new-juro'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Porcentagem %</span>
+                            </div>
+                            <input type="number" class="form-control" id="dado_pvlr" name="dado_pvlr" step="0.01" pattern="\d+(\.\d{2})?" min="0" max="100" required>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
