@@ -1,0 +1,148 @@
+{% load prod_valores %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Nota Fiscal</title>
+
+        <style>
+            #corpo {
+                width: 380px;
+                font-family: sans-serif;
+                font-weight: bold;
+                font-size: 13px;
+            }
+            .between {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+            .center {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            .left {
+                display: flex;
+                justify-content: left;
+                margin-bottom: 10px;
+            }
+            label {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div id="corpo">
+            <div class="center">
+                <label>==================================================</label>
+            </div>
+            <div class="between">
+                <label>{{ dt }}</label>
+                <label>{{ hour }}</label>
+            </div>
+            <div class="center">
+                <label>{{ empresa.razao }}</label>
+            </div>
+            <div class="center">
+                <label>{{ empresa.endereco }}</label>
+            </div>
+            <div class="center">
+                <label>{{ empresa.tel }}</label>
+            </div>
+            <div class="center">
+                <label>&lt;CUPOM SEM VALOR FISCAL&gt;</label>
+            </div>
+            <div class="center">
+                <label>---------------------------------------------------------------------------------------</label>
+            </div>
+            <div class="left">
+                <label>CLIENTE: {{ caixa.fk_tbcli.pk }} | {{ caixa.fk_cli.dsc }}</label>
+            </div>
+            <br>
+            <div class="left">
+                <label>TIPO PAGAMENTO: {{ tipopg }} | PARCELAS: {{ caixa.qtdparc }}</label>
+            </div>
+            <div class="left">
+                <label>VENCIMENTOS:</label>
+            </div>
+            {% if entradas %}
+            {% for ent in entradas %}
+            <div class="between">
+                <label>{{ ent.dtvenc|date:'d/m/Y' }}</label>
+                <label>VLR:  R$ {{ ent.dvlrtotal }}</label>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="between">
+                <label>{{ dt }}</label>
+                <label>VLR:  R$ {{ caixa.dvlr }}</label>
+            </div>
+            {% endif %}
+            <div class="center">
+                <label>---------------------------------------------------------------------------------------</label>
+            </div>
+            <div class="left">
+                <label>CODIGO | DESCRICAO</label>
+            </div>
+            <div class="center">
+                <label>QTDE x R$ UND | R$ DESC | R$ VLR</label>
+            </div>
+            <div class="center">
+                <label>---------------------------------------------------------------------------------------</label>
+            </div>
+            {% for prod in produtos %}
+            <div class="left">
+                <label>{{ prod.fk_tbprod.pk }} | {{ prod.fk_tbprod.dsc }}</label>
+            </div>
+            <div class="center">
+                <label>{{ prod.qtd }} x R$ {{ prod.dvlr }} | R$ {{ prod|desc }} | R$ {{ prod|total }}</label>
+            </div>
+            {% endfor %}
+            <div class="center">
+                <label>---------------------------------------------------------------------------------------</label>
+            </div>
+            <div class="between">
+                <label>Sub Total:</label>
+                <label>R$ 210,00</label>
+            </div>
+            <div class="between">
+                <label>Desconto:</label>
+                <label>R$ 10,00</label>
+            </div>
+            <div class="between">
+                <label>Total Geral:</label>
+                <label>R$ 200,00</label>
+            </div>
+            <br>
+            <div class="between">
+                <label>Valor Pago:</label>
+                <label>R$ 200,00</label>
+            </div>
+            <div class="between">
+                <label>Troco:</label>
+                <label>R$ 0,00</label>
+            </div>
+            <div class="center">
+                <label>---------------------------------------------------------------------------------------</label>
+            </div>
+            <div class="left">
+                <label>VENDEDOR: 2 | TATA</label>
+            </div>
+            <div class="center">
+                <label>---------------------------------------------------------------------------------------</label>
+            </div>
+            <div class="center">
+                <label>&lt;TROCA SOMENTE COM APRESENTACAO DESTE&gt;</label>
+            </div>
+            <div class="center">
+                <label>&lt;VOLTE SEMPRE&gt;</label>
+            </div>
+            <div class="center">
+                <label>==================================================</label>
+            </div>
+        </div>
+    </body>
+</html>

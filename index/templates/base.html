@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    {% block title %}
+    <title></title>
+    {% endblock %}
+  
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="{% static 'img/favicon.png' %}" rel="icon">
+
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/quill/quill.snow.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+
+    {% block header %}
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+        <div class="d-flex align-items-center justify-content-between">
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+            <a href="{% url 'sc_index' %}" class="logo d-flex align-items-center">
+                <img src="{% static 'img/NETSYS.png' %}" alt="">
+            </a>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" name="query" placeholder="Pesquisar por Telas ..." id="search-input" class="form-control">
+        </div>
+
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item d-block d-lg-none">
+                    <a class="nav-link nav-icon search-bar-toggle " href="#">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown pe-3">
+
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <div class="image-container-perfil">
+                            <img src="{{ user_profile.avatar.url }}" alt="Profile Image" class="rounded-circle">
+                        </div>
+                        <span class="d-none d-md-block dropdown-toggle ps-2">{{ user.first_name }} {{ user.last_name }}</span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>{{ user.username }}</h6>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-profile">
+                                <i class="bi bi-person"></i>
+                                <span>Alterar Imagem</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Sair</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+    {% endblock %}
+
+    {% block sidebar %}
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            {% if perms.estoque.view_consignado or perms.estoque.view_etiquetas or perms.estoque.view_inventarios or perms.estoque.view_produtos or perms.estoque.view_troca %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#estoque-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-box2"></i><span>Estoque</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="estoque-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if perms.estoque.view_consignado %}
+                        <a href="{% url 'sc_list_consignado' %}">
+                            <i class="bi bi-circle"></i><span>Consignados</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.estoque.view_etiquetas %}
+                        <a href="{% url 'sc_insert_etiqueta' %}">
+                            <i class="bi bi-circle"></i><span>Etiquetas</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.estoque.view_inventarios %}
+                        <a href="{% url 'sc_list_inventario' %}">
+                            <i class="bi bi-circle"></i><span>Inventários</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.estoque.view_produtos %}
+                        <a href="{% url 'sc_list_produto' %}">
+                            <i class="bi bi-circle"></i><span>Produtos</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.compras.view_lote %}
+                        <a href="{% url 'sc_list_lote' %}">
+                            <i class="bi bi-circle"></i><span>Lotes de Produção</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+
+            {% if perms.financeiro.view_saida or perms.financeiro.view_entrada or perms.financeiro.view_caixa or perms.financeiro.view_transf %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#financeiro-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-bank"></i><span>Financeiro</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="financeiro-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if perms.financeiro.view_saida %}
+                        <a href="{% url 'sc_list_saida_financeiro' %}">
+                            <i class="bi bi-circle"></i><span>Contas a Pagar</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.financeiro.view_entrada %}
+                        <a href="{% url 'sc_list_entrada_financeiro' %}">
+                            <i class="bi bi-circle"></i><span>Contas a Receber</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.financeiro.view_transf %}
+                        <a href="{% url 'sc_list_transf' %}">
+                            <i class="bi bi-circle"></i><span>Transferência Entre Contas</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+
+            {% if perms.financeiro.view_pdv %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#vendas-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-shop"></i><span>Vendas</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="vendas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if perms.financeiro.view_pdv %}
+                        <a href="{% url 'sc_insert_pdv' %}">
+                            <i class="bi bi-circle"></i><span>PDV</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                    {% if perms.financeiro.view_troca %}
+                    <a href="{% url 'sc_list_troca' %}">
+                        <i class="bi bi-circle"></i><span>Troca de Produto</span>
+                    </a>
+                    {% endif %}
+                    {% if perms.financeiro.view_caixa %}
+                    <a href="{% url 'sc_list_caixa' %}">
+                        <i class="bi bi-circle"></i><span>Movimentação de Caixa</span>
+                    </a>
+                    {% endif %}
+                    <li>
+                        {% if perms.financeiro.view_pdv %}
+                        <a href="{% url 'sc_agenda_cliente' %}">
+                            <i class="bi bi-circle"></i><span>Agenda (Cliente)</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+
+            {% if perms.compras.view_compra %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#compras-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-cart4"></i><span>Compras</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="compras-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if perms.compras.view_compra %}
+                        <a href="{% url 'sc_list_compra' %}">
+                            <i class="bi bi-circle"></i><span>Ordem de Compra</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if perms.compras.view_compra %}
+                        <a href="{% url 'sc_agenda_forn' %}">
+                            <i class="bi bi-circle"></i><span>Agenda (Fornecedores)</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+
+            {% if perms.parceiros.view_clientes or perms.parceiros.view_fornecedores %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#parceiros-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-people"></i><span>Parceiros</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="parceiros-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if perms.parceiros.view_clientes %}
+                        <a href="{% url 'sc_list_cliente' %}">
+                            <i class="bi bi-circle"></i><span>Clientes</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.parceiros.view_fornecedores %}
+                        <a href="{% url 'sc_list_fornecedor' %}">
+                            <i class="bi bi-circle"></i><span>Fornecedores</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+
+            {% if perms.cfg.view_categorias or perms.cfg.view_contas or perms.cgf.view_juros or perms.cfg.view_custos or perms.cfg.view_pagamentos or perms.cfg.view_usuarios %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#configuracoes-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-gear"></i><span>Configurações</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="configuracoes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if perms.cfg.categorias %}
+                        <a href="{% url 'sc_list_categoria' %}">
+                            <i class="bi bi-circle"></i><span>Categorias de Produto</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.cfg.view_contas %}
+                        <a href="{% url 'sc_list_conta' %}">
+                            <i class="bi bi-circle"></i><span>Contas Bancárias</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.cfg.view_juros %}
+                        <a href="{% url 'sc_list_juro' %}">
+                            <i class="bi bi-circle"></i><span>Tabela de Juros</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.cfg.view_custos %}
+                        <a href="{% url 'sc_list_custo' %}">
+                            <i class="bi bi-circle"></i><span>Tipos de Custo</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.cfg.view_pagamentos %}
+                        <a href="{% url 'sc_list_tipopg' %}">
+                            <i class="bi bi-circle"></i><span>Tipos de Pagamento</span>
+                        </a>
+                        {% endif %}
+                        {% if perms.cfg.view_usuarios %}
+                        <a href="{% url 'sc_list_user' %}">
+                            <i class="bi bi-circle"></i><span>Usuários</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+            
+        </ul>
+
+    </aside>
+    {% endblock %}
+
+    {% include 'modal/md_new_profile.html' %}
+
+    <main id="main" class="main">
+        {% block validation %}
+        <div id="error-container" class="alert alert-danger"></div>
+        <div id="success-container" class="alert alert-success"></div>
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'vendor/chart.js/chart.umd.js' %}"></script>
+    <script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+    <script src="{% static 'vendor/quill/quill.min.js' %}"></script>
+    <script src="{% static 'vendor/tinymce/tinymce.min.js' %}"></script>
+    <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/urls.js' %}"></script>
+    <script src="{% static 'js/form-validation.js' %}"></script>
+    
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Início</title>
+{% endblock %}]
+
+{% block content %}
+<section class="section dashboard">
+    <div class="row">
+
+        <div class="col-xxl-8">
+            <div class="card">
+
+                <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <li class="dropdown-header text-start">
+                            <h6>Filtros</h6>
+                        </li>
+
+                        <li><a class="dropdown-item" href="?parameter=1&fcard={{ request.GET.fcard }}&scard={{ request.GET.scard }}&pie={{ request.GET.pie }}">Últimos 30 Dias</a></li>
+                        <li><a class="dropdown-item" href="?parameter=2&fcard={{ request.GET.fcard }}&scard={{ request.GET.scard }}&pie={{ request.GET.pie }}">Últimos 12 Meses</a></li>
+                    </ul>
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title">Balanço Financeiro <span>| {% if request.GET.parameter == '2' %}Últimos 12 Meses{% else %}Últimos 30 Dias{% endif %}</span></h5>
+
+                    <div id="reportsChart"></div>
+
+                    <input type="hidden" id="parameter" value="{{ request.GET.parameter }}">
+
+                </div>
+
+            </div>
+      </div>
+
+        <div class="col-xxl-4">
+
+            <div class="col-xxl-12">
+                <div class="card info-card sales-card">
+
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filtros</h6>
+                            </li>
+
+                            <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard=1&scard={{ request.GET.scard }}&pie={{ request.GET.pie }}">Hoje</a></li>
+                            <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard=2&scard={{ request.GET.scard }}&pie={{ request.GET.pie }}">Este Mês</a></li>
+                            <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard=3&scard={{ request.GET.scard }}&pie={{ request.GET.pie }}">Este Ano</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Vendas <span>| {% if request.GET.fcard == '2' %}Este Mês{% elif request.GET.fcard == '3' %}Este Ano{% else %}Hoje{%endif%}</span></h5>
+
+                        <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-cart"></i>
+                          </div>
+                          <div class="ps-3">
+                              <h6>{{ total_vendas }}</h6>
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-xxl-12">
+                <div class="card info-card revenue-card">
+
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filtros</h6>
+                            </li>
+
+                            <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.scard }}&scard=1&pie={{ request.GET.pie }}">Hoje</a></li>
+                            <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.scard }}&scard=2&pie={{ request.GET.pie }}">Este Mês</a></li>
+                            <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.scard }}&scard=3&pie={{ request.GET.pie }}">Este Ano</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">Faturamento <span>| {% if request.GET.scard == '2' %}Este Mês{% elif request.GET.scard == '3' %}Este Ano{% else %}Hoje{%endif%}</span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>R$ {{ faturamento }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xxl-8">
+            <div class="card top-selling overflow-auto">
+
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Vendas Recentes</h5>
+
+                    <table class="table table-borderless" style="height: 410px;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Produto</th>
+                                <th scope="col">QTD</th>
+                                <th scope="col">Preço (UND)</th>
+                                <th scope="col">Tipo de Pagamento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prod in produtos %}
+                            <tr>
+                                <td>{% for cx in caixa %}{% if prod.fk_tbcx == cx %}{{ cx.fk_tbcli.dsc }}{% endif %}{% endfor %}</td>
+                                <td>{{ prod.fk_tbprod.dsc }}</td>
+                                <td>{{ prod.qtd }}</td>
+                                <td>R$ {{ prod.dvlr }}</td>
+                                <td>
+                                    {% for cx in caixa %}
+                                    {% if prod.fk_tbcx == cx %}
+                                    {% if prod.fk_tbcx.fk_ctbitipopg %}
+                                    {{ cx.fk_ctbitipopg.dsc }}
+                                    {% elif prod.fk_tbcx.qtdparc > 1 %}
+                                    Crediário
+                                    {% else %}
+                                    Dinheiro
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xxl-4">
+
+            <div class="card">
+
+                <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <li class="dropdown-header text-start">
+                            <h6>Filtros</h6>
+                        </li>
+    
+                        <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.fcard }}&scard={{ request.GET.scard }}&pie=1">Últimos 7 dias</a></li>
+                        <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.fcard }}&scard={{ request.GET.scard }}&pie=2">Últimos 30 Dias</a></li>
+                        <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.fcard }}&scard={{ request.GET.scard }}&pie=3">Últimos 12 Meses</a></li>
+                    </ul>
+                </div>
+      
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Produtos Vendidos <span>| {% if request.GET.pie == '3' %}Últimos 12 Meses{% elif request.GET.pie == '2' %}Últimos 30 Dias{% else %}Últimos 7 Dias{% endif %}</span></h5>
+                    <div id="trafficChart" style="min-height: 425px;" class="echart"></div>
+                    <input type="hidden" id="pie" value="{{ request.GET.pie }}">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xxl-8">
+            <div class="card top-selling overflow-auto">
+
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Compras Recentes</h5>
+
+                    <table class="table table-borderless" style="height: 410px;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fornecedor</th>
+                                <th scope="col">Produto</th>
+                                <th scope="col">QTD</th>
+                                <th scope="col">Preço (UND)</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prod in compras %}
+                            <tr>
+                                <td>{{ prod.fk_tbcomp.fk_tbforn.razao }}</td>
+                                <td>{{ prod.fk_tbprod.dsc }}</td>
+                                <td>{{ prod.qtd }}</td>
+                                <td>R$ {{ prod.dvlr }}</td>
+                                <td>{{ prod.get_sts_display }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xxl-4">
+
+            <div class="card">
+
+                <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <li class="dropdown-header text-start">
+                            <h6>Filtros</h6>
+                        </li>
+    
+                        <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.fcard }}&scard={{ request.GET.scard }}&pie={{ request.GET.pie }}&pie2=1">Últimos 7 dias</a></li>
+                        <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.fcard }}&scard={{ request.GET.scard }}&pie={{ request.GET.pie }}&pie2=2">Últimos 30 Dias</a></li>
+                        <li><a class="dropdown-item" href="?parameter={{ request.GET.parameter }}&fcard={{ request.GET.fcard }}&scard={{ request.GET.scard }}&pie={{ request.GET.pie }}&pie2=3">Últimos 12 Meses</a></li>
+                    </ul>
+                </div>
+      
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Tipos de Custo <span>| {% if request.GET.pie2 == '3' %}Últimos 12 Meses{% elif request.GET.pie2 == '2' %}Últimos 30 Dias{% else %}Últimos 7 Dias{% endif %}</span></h5>
+                    <div id="trafficChart2" style="min-height: 425px;" class="echart"></div>
+                    <input type="hidden" id="pie2" value="{{ request.GET.pie2 }}">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/graficos.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,33 @@
+<div class="modal fade" id="modal-new-profile" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Atualizar Imagem de Perfil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-profile" action="{% url 'new_profile' %}" method="POST" enctype="multipart/form-data" onsubmit="enviarFormulario('form-new-profile'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center align-items-center">
+                            <div class="image-container">
+                                <img src="{{ user_profile.avatar.url }}" alt="Profile" class="rounded-circle list-users">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        Nova Imagem
+                        <input type="file" class="clearablefileinput form-control-file" name="dado_avatar" id="dado_avatar" required>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
