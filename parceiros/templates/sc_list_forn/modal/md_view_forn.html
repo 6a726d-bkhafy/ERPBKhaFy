@@ -1,0 +1,65 @@
+<div class="modal fade" id="modal-view-forn{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Fornecedor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Código</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.pk }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Razão</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.razao }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Telefone</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.tel }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Email</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.email }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Estado</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.get_estado_display }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Cidade</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.cidade }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Bairro</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.bairro }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Número</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.num }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Rua</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.rua }}" readonly>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,164 @@
+<div class="modal fade" id="modal-edit-cliente{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-edit-cliente{{ obj.pk }}" action="{% url 'edit_cliente' %}" method="POST" onsubmit="enviarFormulario('form-edit-cliente{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_dsc" name="dado_dsc" required value="{{ obj.dsc }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tipo de Cliente</span>
+                            </div>
+                            <select name="dado_tipocli" id="dado_tipocli" class="form-control" required>
+                                {% for tipo in tipos %}
+                                {% if tipo.0 == obj.tipocli %}
+                                <option value="{{ tipo.0 }}" selected>{{ tipo.1 }}</option>
+                                {% else %}
+                                <option value="{{ tipo.0 }}">{{ tipo.1 }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">CNPJ/CPF</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_doc" name="dado_doc" required value="{{ obj.doc }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">RG</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_rg" name="dado_rg" value="{{ obj.rg }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data de Nascimento</span>
+                            </div>
+                            <input type="date" class="form-control" id="dado_dtnasc" name="dado_dtnasc">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Email</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_email" name="dado_email" value="{{ obj.email }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone 1</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_tel1" name="dado_tel1" value="{{ obj.tel1 }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone 2</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_tel2" name="dado_tel2" value="{{ obj.tel2 }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone Recados</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_telrec" name="dado_telrec" value="{{ obj.telrec }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone Trabalho</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_teltrab" name="dado_teltrab" value="{{ obj.teltrab }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Celular</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_celular" name="dado_celular" value="{{ obj.celular }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Contato</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_contato" name="dado_contato" value="{{ obj.contato }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Local de Trabalho</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_localtrab" name="dado_localtrab" value="{{ obj.localtrab }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Último Trabalho</span>
+                            </div>
+                            <input type="date" class="form-control" id="dado_dttrab" name="dado_dttrab">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Bairro</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_bairro" name="dado_bairro" value="{{ obj.bairro }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Número</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_num" name="dado_num" value="{{ obj.num }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Estado</span>
+                            </div>
+                            <select name="dado_estado" id="dado_estado" class="form-control">
+                                {% for estado in estados %}
+                                {% if estado.0 == obj.estado %}
+                                <option value="{{ estado.0 }}" selected>{{ estado.1 }}</option>
+                                {% else %}
+                                <option value="{{ estado.0 }}">{{ estado.1 }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cidade</span>
+                            </div>
+                            <input type="text" class="textinput textInput form-control" id="dado_cidade" name="dado_cidade" value="{{ obj.cidade }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rua</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_rua" name="dado_rua" value="{{ obj.rua }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Referência 1</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ref1" name="dado_ref1" value="{{ obj.ref1 }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Referência 2</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ref2" name="dado_ref2" value="{{ obj.ref2 }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Referência 3</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ref3" name="dado_ref3" value="{{ obj.ref3 }}">
+                        </div>
+                        <label class="mt-2">Observação:</label>
+                        <div class="input-group mt-2">
+                            <textarea name="dado_obs" id="dado_obs" cols="30" rows="10" class="form-control">{{ obj.obs }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        Enviar Imagem do Cliente
+                        <input type="file" class="clearablefileinput form-control-file" name="dado_img" id="dado_img">
+                    </div>
+
+                    <input type="hidden" id="id_cliente" name="id_cliente" value="{{ obj.pk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

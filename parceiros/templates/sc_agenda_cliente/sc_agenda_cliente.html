@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Agenda (Cliente)</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Agenda (Cliente)</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-agenda-cliente">Novo Contato</a>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="justify-content-end filtro">
+                                <a class="btn btn-primary filtro-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-filter-list-agenda-cliente">Filtros</a>
+                                {% if filtrado %}
+                                <a href="{% url 'sc_agenda_cliente' %}" class="btn btn-danger">Limpar Filtros</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'cli' %}-desc{% else %}desc{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_doc={{ request.GET.search_doc }}">
+                                            Cliente
+                                            {% if request.GET.ordering == "cli" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-cli" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dthr' %}-id{% else %}id{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_doc={{ request.GET.search_doc }}">
+                                            Data
+                                            {% if request.GET.ordering == "dthr" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dthr" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'ass' %}-desc{% else %}desc{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_doc={{ request.GET.search_doc }}">
+                                            Assunto
+                                            {% if request.GET.ordering == "ass" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-ass" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'sts' %}-id{% else %}id{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_doc={{ request.GET.search_doc }}">
+                                            Status
+                                            {% if request.GET.ordering == "sts" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-sts" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'tp' %}-id{% else %}id{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_doc={{ request.GET.search_doc }}">
+                                            Tipo
+                                            {% if request.GET.ordering == "tp" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-tp" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.fk_tbcli.dsc }}</td>
+                                    <td>{{ obj.dthr|date:'d/m/Y H:i' }}</td>
+                                    <td>{{ obj.assunto }}</td>
+                                    <td>{{ obj.get_stsagendacli_display }}</td>
+                                    <td>{{ obj.get_tipocontatocli_display }}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-agenda-cliente{{ obj.pk }}">
+                                                    <i class="bi bi-pencil-fill"></i> Editar Contato</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-agenda-cliente{{ obj.pk }}">
+                                                    <i class="bi bi-eye-fill"></i> Visualizar Contato</a>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'sc_agenda_cliente/modal/md_edit_agenda_cliente.html' %}
+                                {% include 'sc_agenda_cliente/modal/md_view_agenda_cliente.html' %}
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="5" class="text-center">Nenhum registro a ser mostrado.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'sc_agenda_cliente/pagination/pg_agenda_cliente.html' %}
+                                              
+                    </div>
+
+                    {% include 'sc_agenda_cliente/modal/md_new_agenda_cliente.html' %}
+                    {% include 'sc_agenda_cliente/modal/md_filter_list_agenda_cliente.html' %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function() {
+        $("#dado_cliente_desc").autocomplete({
+            source: "/inicio/autocomplete/cliente-by-desc",
+            minLength: 2,
+            select: function(event, ui) {
+                $("#id_cliente").val(ui.item.pk);
+            },
+            messages: {
+                noResults: '',
+                results: function() {}
+            },
+            open: function() {
+                $('.ui-autocomplete').css('z-index', 10000);
+            }
+        });
+
+    });
+
+    $(document).ready(function() {
+        $("#dado_cliente_desc_cred").autocomplete({
+            source: "/inicio/autocomplete/cliente-by-desc",
+            minLength: 2,
+            select: function(event, ui) {
+                $("#id_cliente_cred").val(ui.item.pk);
+            },
+            messages: {
+                noResults: '',
+                results: function() {}
+            },
+            open: function() {
+                $('.ui-autocomplete').css('z-index', 10000);
+            }
+        });
+
+    });
+
+    $(document).ready(function() {
+        $("#dado_cliente_desc_rel").autocomplete({
+            source: "/inicio/autocomplete/cliente-by-desc",
+            minLength: 2,
+            select: function(event, ui) {
+                $("#id_cliente_rel").val(ui.item.pk);
+            },
+            messages: {
+                noResults: '',
+                results: function() {}
+            },
+            open: function() {
+                $('.ui-autocomplete').css('z-index', 10000);
+            }
+        });
+
+    });
+
+    $("#dado_usuario_desc").autocomplete({
+            source: "/inicio/autocomplete/usuario-by-desc",
+            minLength: 2,
+            select: function(event, ui) {
+                $("#id_usuario").val(ui.item.pk);
+            },
+            messages: {
+                noResults: '',
+                results: function() {}
+            },
+            open: function() {
+                $('.ui-autocomplete').css('z-index', 10000);
+            }
+        });
+
+    $("#dado_usuario_desc_cred").autocomplete({
+        source: "/inicio/autocomplete/usuario-by-desc",
+        minLength: 2,
+        select: function(event, ui) {
+            $("#id_usuario_cred").val(ui.item.pk);
+        },
+        messages: {
+            noResults: '',
+            results: function() {}
+        },
+        open: function() {
+            $('.ui-autocomplete').css('z-index', 10000);
+        }
+    });
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/autocomplete-usuario-modal.js' %}"></script>
+<script src="{% static 'js/autocomplete-cliente-modal.js' %}"></script>
+{% endblock %}

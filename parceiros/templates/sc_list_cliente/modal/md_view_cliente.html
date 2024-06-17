@@ -1,0 +1,171 @@
+<div class="modal fade" id="modal-view-cliente{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                        <div class="produto-img">
+                            <img src="{{ obj.img.url }}" alt="Cliente">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Data de Cadastro</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{{ obj.dtcad|date:'d/m/Y H:i' }}">
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Descrição</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{{ obj.dsc }}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Tipo de Cliente</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{{ obj.get_tipocli_display }}">
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">CNPJ/CPF</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="{{ obj.doc }}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">RG</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.rg }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Limite Crediário</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="R$ {{ obj.limite }}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Disponível</span>
+                        </div>
+                        <input type="text" class="form-control" value="R$ {{ obj.creddisp }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Limite Consignado</span>
+                        </div>
+                        <input type="text" class="form-control" readonly value="R$ {{ obj.limite }}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Disponível</span>
+                        </div>
+                        <input type="text" class="form-control" value="R$ {{ obj.consdisp }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Data de Nascimento</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.dtnasc|date:'d/m/Y' }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Email</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.email }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Telefone 1</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.tel1 }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Telefone 2</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.tel2 }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Telefone Recados</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.telrec }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Telefone Trabalho</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.teltrab }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Celular</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.celular }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Contato</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.contato }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Local de Trabalho</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.localtrab }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Último Trabalho</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.dttrab|date:'d/m/Y' }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Bairro</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.bairro }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Número</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.num }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Estado</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.estado }}" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Cidade</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.cidade }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Rua</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.rua }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Referência 1</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.ref1 }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Referência 2</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.ref2 }}" readonly>
+                    </div>
+                    <div class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Referência 3</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{ obj.ref3 }}" readonly>
+                    </div>
+                    <label class="mt-2">Observação:</label>
+                    <div class="input-group mt-2">
+                        <textarea name="dado_obs" id="dado_obs" cols="30" rows="10" class="form-control" readonly>{{ obj.obs }}</textarea>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="modal fade" id="modal-new-agenda-forn" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Contato</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-agenda-forn" action="{% url 'new_agenda_forn' %}" method="POST" onsubmit="enviarFormulario('form-new-agenda-forn'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data do Contato</span>
+                            </div>
+                            <input type="datetime-local" class="form-control" id="dado_dthr" name="dado_dthr">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Status</span>
+                            </div>
+                            <select name="dado_stscli" id="dado_stscli" class="form-control" required>
+                                <option value=""></option>
+                                {% for i in sts %}
+                                <option value="{{ i.0 }}">{{ i.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tipo de Contato</span>
+                            </div>
+                            <select name="dado_tpcli" id="dado_tpcli" class="form-control" required>
+                                <option value=""></option>
+                                {% for i in tipo %}
+                                <option value="{{ i.0 }}">{{ i.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código</span>
+                            </div>
+                            <input type="number" class="form-control cod" name="id_usuario_cred" id="id_usuario_cred" min="0" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Usuário</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_usuario_desc_cred" id="dado_usuario_desc_cred" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código</span>
+                            </div>
+                            <input type="number" class="form-control cod" name="id_fornecedor_rel" id="id_fornecedor_rel" min="0" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Fornecedor</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_fornecedor_desc_rel" id="dado_fornecedor_desc_rel" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Responsável</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_resp" name="dado_resp">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Assunto</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ass" name="dado_ass">
+                        </div>
+                        <label class="mt-2">Descrição:</label>
+                        <div class="input-group mt-2">
+                            <textarea name="dado_dsc" id="dado_dsc" cols="30" rows="10" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

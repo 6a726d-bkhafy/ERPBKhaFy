@@ -1,0 +1,73 @@
+<div class="modal fade" id="modal-new-forn" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Fornecedor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-forn" action="{% url 'new_forn' %}" method="POST" onsubmit="enviarFormulario('form-new-forn'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Razão</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_razao" name="dado_razao" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">CNPJ/CPF</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_doc" name="dado_doc" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_tel" name="dado_tel">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Email</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_email" name="dado_email">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Estado</span>
+                            </div>
+                            <select name="dado_estado" id="dado_estado" class="form-control">
+                                {% for estado in estados %}
+                                <option value="{{ estado.0 }}">{{ estado.1 }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cidade</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_cidade" name="dado_cidade">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Bairro</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_bairro" name="dado_bairro">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Número</span>
+                            </div>
+                            <input type="number" class="form-control" id="dado_num" name="dado_num" min="0">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rua</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_rua" name="dado_rua">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

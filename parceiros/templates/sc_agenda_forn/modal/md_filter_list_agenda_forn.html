@@ -1,0 +1,58 @@
+<div class="modal fade" id="modal-filter-list-agenda-forn" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filtros</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="get">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cód Fornecedor</span>
+                            </div>
+                            <input type="number" name="search_forn" id="id_fornecedor_filter" min="0" class="form-control cod" value="{{ request.GET.search_forn }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" id="dado_fornecedor_desc_filter" class="form-control" value="{{ forn.dsc }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data:</span>
+                            </div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Início</span>
+                            </div>
+                            <input type="date" name="search_dtinicio" class="form-control" value="{{ request.GET.search_eminicio }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Fim</span>
+                            </div>
+                            <input type="date" name="search_dtfim" class="form-control" value="{{ request.GET.search_emfim }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Status</span>
+                            </div>
+                            <select name="search_sts" id="search_sts" class="form-control">
+                                <option value=""></option>
+                                {% for status_code, status_name in sts %}
+                                <option value="{{ status_code }}" {% if status_code == request.GET.search_sts %}selected{% endif %}>
+                                    {{ status_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

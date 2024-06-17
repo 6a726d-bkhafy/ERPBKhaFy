@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Fornecedor</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Fornecedor</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#modal-new-forn">Novo Fornecedor</a>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="justify-content-end filtro">
+                                <a class="btn btn-primary filtro-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-filter-list-forn">Filtros</a>
+                                {% if filtrado %}
+                                <a href="{% url 'sc_list_fornecedor' %}" class="btn btn-danger">Limpar Filtros</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'id' %}-id{% else %}id{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_doc={{ request.GET.search_doc }}">
+                                            Código
+                                            {% if request.GET.ordering == "id" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-id" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'razao' %}-razao{% else %}razao{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_doc={{ request.GET.search_doc }}">
+                                            Razão
+                                            {% if request.GET.ordering == "razao" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-razao" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'doc' %}-doc{% else %}doc{% endif %}&search_id={{ request.GET.search_id }}&search_desc={{ request.GET.search_desc }}&search_doc={{ request.GET.search_doc }}">
+                                            CNPJ/CPF
+                                            {% if request.GET.ordering == "doc" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-doc" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.pk }}</td>
+                                    <td>{{ obj.razao }}</td>
+                                    <td>{{ obj.doc }}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-forn{{ obj.pk }}">
+                                                    <i class="bi bi-pencil-fill"></i> Editar Fornecedor</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-forn{{ obj.pk }}">
+                                                    <i class="bi bi-eye-fill"></i> Visualizar Fornecedor</a>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'sc_list_forn/modal/md_edit_forn.html' %}
+                                {% include 'sc_list_forn/modal/md_view_forn.html' %}
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="5" class="text-center">Nenhum registro a ser mostrado.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'sc_list_forn/pagination/pg_list_forn.html' %}
+                                              
+                    </div>
+
+                    {% include 'sc_list_forn/modal/md_new_forn.html' %}
+                    {% include 'sc_list_forn/modal/md_filter_list_forn.html' %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

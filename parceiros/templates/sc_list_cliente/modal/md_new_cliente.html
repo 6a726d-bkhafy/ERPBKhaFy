@@ -1,0 +1,161 @@
+<div class="modal fade" id="modal-new-cliente" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-new-cliente" action="{% url 'new_cliente' %}" method="POST" onsubmit="enviarFormulario('form-new-cliente'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_dsc" name="dado_dsc" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tipo de Cliente</span>
+                            </div>
+                            <select name="dado_tipocli" id="dado_tipocli" class="form-control" required>
+                                <option value=""></option>
+                                {% for tipo in tipos %}
+                                <option value="{{ tipo.0 }}">{{ tipo.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">CNPJ/CPF</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_doc" name="dado_doc" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">RG</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_rg" name="dado_rg">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Limite R$</span>
+                            </div>
+                            <input type="number" class="form-control" id="dado_limite" name="dado_limite" step="0.01" pattern="\d+(\.\d{2})?" min="0" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data de Nascimento</span>
+                            </div>
+                            <input type="date" class="form-control" id="dado_dtnasc" name="dado_dtnasc">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Email</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_email" name="dado_email">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone 1</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_tel1" name="dado_tel1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone 2</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_tel2" name="dado_tel2">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone Recados</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_telrec" name="dado_telrec">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Telefone Trabalho</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_teltrab" name="dado_teltrab">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Celular</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_celular" name="dado_celular">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Contato</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_contato" name="dado_contato">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Local de Trabalho</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_localtrab" name="dado_localtrab">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Último Trabalho</span>
+                            </div>
+                            <input type="date" class="form-control" id="dado_dttrab" name="dado_dttrab">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Bairro</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_bairro" name="dado_bairro">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Número</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_num" name="dado_num">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Estado</span>
+                            </div>
+                            <select name="dado_estado" id="dado_estado" class="form-control">
+                                {% for estado in estados %}
+                                <option value="{{ estado.0 }}">{{ estado.1 }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cidade</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_cidade" name="dado_cidade">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rua</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_rua" name="dado_rua">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Referência 1</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ref1" name="dado_ref1">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Referência 2</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ref2" name="dado_ref2">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Referência 3</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ref3" name="dado_ref3">
+                        </div>
+                        <label class="mt-2">Observação:</label>
+                        <div class="input-group mt-2">
+                            <textarea name="dado_obs" id="dado_obs" cols="30" rows="10" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        Enviar Imagem do Cliente
+                        <input type="file" class="clearablefileinput form-control-file" name="dado_img" id="dado_img">
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

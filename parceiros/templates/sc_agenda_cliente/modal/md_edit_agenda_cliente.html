@@ -1,0 +1,85 @@
+<div class="modal fade" id="modal-edit-agenda-cliente{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-edit-agenda-cliente{{ obj.pk }}" action="{% url 'edit_agenda_cliente' %}" method="POST" onsubmit="enviarFormulario('form-edit-agenda-cliente{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data do Contato</span>
+                            </div>
+                            <input type="datetime-local" class="form-control" id="dado_dthr" name="dado_dthr" required value="{{ obj.dthr|date:'Y-m-d\TH:i' }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Status</span>
+                            </div>
+                            <select name="dado_stscli" id="dado_stscli" class="form-control" required>
+                                <option value=""></option>
+                                {% for i in sts %}
+                                <option value="{{ i.0 }}" {% if obj.stsagendacli == i.0 %}selected{% endif %}>{{ i.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tipo de Contato</span>
+                            </div>
+                            <select name="dado_tpcli" id="dado_tpcli" class="form-control" required>
+                                <option value=""></option>
+                                {% for i in tipo %}
+                                <option value="{{ i.0 }}" {% if obj.tipocontatocli == i.0 %}selected{% endif %}>{{ i.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código</span>
+                            </div>
+                            <input type="number" class="form-control cod" name="id_usuario" id="id_usuario" min="0" required value="{{ obj.fk_user.pk }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Usuário</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_usuario_desc" id="dado_usuario_desc" required value="{{ obj.fk_user.username }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código</span>
+                            </div>
+                            <input type="number" class="form-control cod" name="id_cliente" id="id_cliente" min="0" required value="{{ obj.fk_tbcli.pk }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cliente</span>
+                            </div>
+                            <input type="text" class="form-control" name="dado_cliente_desc" id="dado_cliente_desc" required value="{{ obj.fk_tbcli.dsc }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Responsável</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_resp" name="dado_resp" required value="{{ obj.resp }}">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Assunto</span>
+                            </div>
+                            <input type="text" class="form-control" id="dado_ass" name="dado_ass" required value="{{ obj.assunto }}">
+                        </div>
+                        <label class="mt-2">Descrição:</label>
+                        <div class="input-group mt-2">
+                            <textarea name="dado_dsc" id="dado_dsc" cols="30" rows="10" class="form-control">{{ obj.dsc }}</textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" id="id_agenda" name="id_agenda" value="{{ obj.pk }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
