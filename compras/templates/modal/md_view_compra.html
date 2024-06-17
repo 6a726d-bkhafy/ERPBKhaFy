@@ -1,0 +1,41 @@
+<div class="modal fade" id="modal-view-compra{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Visualizar Produtos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="table-responsive">            
+                    <table class="table table-hover" id="tabela">
+                        <thead>
+                            <tr>
+                                <th scope="col">Cód Produto</th>
+                                <th scope="col">Descrição</th>
+                                <th scope="col">Quantidade</th>
+                                <th scope="col">Valor por Unidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ent in entradas %}
+                            {% if ent.fk_tbcomp.pk == obj.pk %}
+                            <tr>
+                                <td>{{ ent.fk_tbprod.pk }}</td>
+                                <td>{{ ent.fk_tbprod.dsc }}</td>
+                                <td>{{ ent.qtd }}</td>
+                                <td>R$ {{ ent.dvlr }}</td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

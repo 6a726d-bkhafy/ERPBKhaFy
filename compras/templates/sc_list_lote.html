@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+<title>Lotes de Produção</title>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Lotes de Produção</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-primary" href="{% url 'sc_insert_lote' 0 %}">Novo Lote</a>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="justify-content-end filtro">
+                                <a class="btn btn-primary filtro-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-filter-list-lote">Filtros</a>
+                                {% if filtrado %}
+                                <a href="{% url 'sc_list_lote' %}" class="btn btn-danger">Limpar Filtros</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'fk_tbpar__desc' %}-fk_tbpar__desc{% else %}fk_tbpar__desc{% endif %}&search_forn={{ request.GET.search_forn }}&search_dtinicio={{ request.GET.search_dtinicio }}&search_dtfim={{ request.GET.search_dtfim }}&search_status={{ request.GET.search_status }}">
+                                            Cod. do Lote
+                                            {% if request.GET.ordering == "pk" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-pk" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'qtd' %}-qtd{% else %}qtd{% endif %}&search_forn={{ request.GET.search_forn }}&search_dtinicio={{ request.GET.search_dtinicio }}&search_dtfim={{ request.GET.search_dtfim }}&search_status={{ request.GET.search_status }}">
+                                            Total de Itens
+                                            {% if request.GET.ordering == "qtd" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-qtd" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'dt' %}-dt{% else %}dt{% endif %}&search_forn={{ request.GET.search_forn }}&search_dtinicio={{ request.GET.search_dtinicio }}&search_dtfim={{ request.GET.search_dtfim }}&search_status={{ request.GET.search_status }}">
+                                            Data de Produção
+                                            {% if request.GET.ordering == "dt" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-dt" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?ordering={% if request.GET.ordering == 'sts' %}-sts{% else %}sts{% endif %}&search_forn={{ request.GET.search_forn }}&search_dtinicio={{ request.GET.search_dtinicio }}&search_dtfim={{ request.GET.search_dtfim }}&search_status={{ request.GET.search_status }}">
+                                            Status
+                                            {% if request.GET.ordering == "sts" %}
+                                                &#9650;
+                                            {% elif request.GET.ordering == "-sts" %}
+                                                &#9660;
+                                            {% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr data-toggle="table-{{ obj.pk }}">
+                                    <td>{{ obj.pk }}</td>
+                                    <td>{{ obj.qtd }}</td>
+                                    <td>{{ obj.dt|date:'d/m/Y H:i' }}</td>
+                                    <td>{{ obj.get_sts_display }}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                {% if obj.sts == '0' %}
+                                                <a class="dropdown-item" href="{% url 'sc_insert_lote' obj.pk %}">
+                                                    <i class="bi bi-box-arrow-in-right"></i> Abrir Lote</a>
+                                                </a>
+                                                {% elif obj.sts != '3' and obj.sts != '4' %}
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-entrada-lote{{ obj.pk }}">
+                                                    <i class="bi bi-box-arrow-in-right"></i> Adicionar ao Estoque</a>
+                                                </a>
+                                                {% endif %}
+                                                {% if obj.sts != '0' %}
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-view-lote{{ obj.pk }}">
+                                                    <i class="bi bi-eye-fill"></i> Visualizar Produtos</a>
+                                                </a>
+                                                {% endif %}
+                                                {% if obj.sts == '1' %}
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-estorno-lote{{ obj.pk }}">
+                                                    <i class="bi bi-backspace-reverse-fill"></i> Estornar Lote</a>
+                                                </a>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr id="table-{{ obj.pk }}" class="table-detail collapse">
+                                    <td colspan="7">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-secondary">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Cód Produto</th>
+                                                        <th scope="col">Descrição</th>
+                                                        <th scope="col">Quantidade</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for ent in entradas %}
+                                                    {% if ent.fk_tblote.pk == obj.pk %}
+                                                    <tr>
+                                                        <td>{{ ent.fk_tbprod.pk }}</td>
+                                                        <td>{{ ent.fk_tbprod.dsc }}</td>
+                                                        <td>{{ ent.qtd }}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                {% include 'modal/md_entrada_lote.html' %}
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="8" class="text-center">Nenhum lote produzido.</td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'pagination/pg_list_lote.html' %}
+                                              
+                    </div>
+
+                    {% for obj in object_list %}
+                    {% include 'modal/md_view_lote.html' %}
+                    {% include 'modal/md_estorno_lote.html' %}
+                    {% endfor %}
+
+                    {% include 'modal/md_filter_list_compra.html' %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const rows = document.querySelectorAll('tr[data-toggle]');
+    const icons = document.querySelectorAll('.icon');
+
+    rows.forEach(row => {
+        row.addEventListener('click', function () {
+            const detailId = this.getAttribute('data-toggle');
+            const detailElement = document.getElementById(detailId);
+            if (detailElement.classList.contains('collapse')) {
+                detailElement.classList.remove('collapse');
+            } else {
+                detailElement.classList.add('collapse');
+            }
+        });
+    });
+
+    icons.forEach(icon => {
+        icon.addEventListener('click', function (event) {
+            event.stopPropagation(); // Impede que o evento suba para a linha da tabela
+        });
+    });
+
+});
+</script>
+<script src="{% static 'js/autocomplete-usuario-modal.js' %}"></script>
+<script src="{% static 'js/autocomplete-fornecedor-modal.js' %}"></script>
+{% endblock %}

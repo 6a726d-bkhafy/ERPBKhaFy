@@ -1,0 +1,43 @@
+<div class="modal fade" id="modal-relatorio" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gerar Relatório de Compra</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-relatorio" action="{% url 'relatorio_compra' %}" method="POST" onsubmit="enviarFormularioPDF('form-relatorio'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">De:</span>
+                            </div>
+                            <input type="date" class="form-control" name="dado_dtinicio">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Até:</span>
+                            </div>
+                            <input type="date" class="form-control" name="dado_dtfim">
+                        </div>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Cód Fornecedor</span>
+                            </div>
+                            <input type="number" name="id_fornecedor" id="id_fornecedor_rel" min="0" class="form-control cod">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Descrição</span>
+                            </div>
+                            <input type="text" id="dado_fornecedor_desc_rel" class="form-control">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

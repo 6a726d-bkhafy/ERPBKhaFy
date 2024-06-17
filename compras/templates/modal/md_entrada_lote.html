@@ -1,0 +1,41 @@
+<div class="modal fade" id="modal-entrada-lote{{ obj.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Realizar Entrada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-entrada-lote{{ obj.pk }}" action="{% url 'entrada_lote' %}" method="POST" onsubmit="enviarFormulario('form-entrada-lote{{ obj.pk }}'); return false;">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        {% for ent in entradas %}
+                        {% if ent.fk_tblote.pk == obj.pk and ent.qtd > 0 %}
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Produto</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="{{ ent.fk_tbprod.dsc }}">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Qtd</span>
+                            </div>
+                            <input type="text" class="form-control" readonly value="{{ ent.qtd }}">
+                            <!-- Esconde o input de Qtd Recebido, e envia o valor total de qtdpen no submit -->
+                            <input type="hidden" name="dado_{{ ent.fk_tbprod.pk }}" value="{{ ent.qtd }}">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <input type="hidden" name="id_lote" value="{{ obj.pk }}">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

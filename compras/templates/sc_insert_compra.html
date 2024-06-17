@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Ordem de Compra</title>
+{% endblock %}
+
+{% block content %}
+{% if fk == 0 or ordem.0.sts == '0' %}
+<section>
+    <div class="container-flex">
+        <div class="card mb-3">
+            <div class="card-body col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-primary mt-4" href="{% url 'sc_list_compra' %}"><i class="bi bi-arrow-left-square"></i> Voltar</a>
+                        <div class="pt-1 pb-4 title-container pagetitle">
+                            <h5 class="text-center title-text mt-4">Ordem de Compra</h5>
+                        </div>
+
+                        <form class="row g-3 needs-validation" action="{% url 'add_item_compra' fk %}" method="POST" id="formulario" onsubmit="enviarFormulario('formulario'); return false;">
+        
+                            {% csrf_token %}
+            
+                            <div class="form-group">
+                                {% if fk == 0 %}
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Cód Fornecedor</span>
+                                    </div>
+                                    <input type="number" class="form-control cod" id="id_fornecedor" name="id_fornecedor" min="0" required>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Descrição</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="dado_fornecedor_desc" name="dado_fornecedor_desc" required>
+                                </div>
+                                <div class="input-group mt-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Data de Emissão</span>
+                                    </div>
+                                    <input type="date" class="form-control" name="dado_dtem", id="dado_dtem" required>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Data de Vencimento</span>
+                                    </div>
+                                    <input type="date" class="form-control" name="dado_dtvenc", id="dado_dtvenc" required>
+                                </div>
+                                <div class="input-group mt-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Centro de Custo</span>
+                                    </div>
+                                    <select name="id_custo" id="id_custo" class="form-control" required>
+                                        <option value=""></option>
+                                        {% for custo in custos %}
+                                        <option value="{{ custo.pk }}">{{ custo.dsc }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Parcelas</span>
+                                    </div>
+                                    <select name="dado_parcela" id="dado_parcela" class="form-control" required>
+                                        <option value=""></option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                                <div class="input-group mt-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Número da Nota</span>
+                                    </div>
+                                    <input type="number" class="form-control" name="dado_numnota", id="dado_numnota" min="0" required>
+                                </div>
+                                {% else %}
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Cód Fornecedor</span>
+                                    </div>
+                                    <input type="text" class="form-control cod" readonly value="{{ ordem.0.fk_tbforn.pk }}">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Descrição</span>
+                                    </div>
+                                    <input type="text" class="form-control" readonly value="{{ ordem.0.fk_tbforn.razao }}">
+                                </div>
+                                <div class="input-group mt-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Data de Vencimento</span>
+                                    </div>
+                                    <input type="text" class="form-control" readonly value="{{ ordem.0.dtvenc|date:'d/m/Y' }}">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Centro de Custo</span>
+                                    </div>
+                                    <input type="text" class="form-control" readonly value="{{ ordem.0.fk_ctbcatfin.dsc }}">
+                                </div>
+                                <div class="input-group mt-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Número da Nota</span>
+                                    </div>
+                                    <input type="text" class="form-control" readonly value="{{ ordem.0.numnota }}">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Parcelas</span>
+                                    </div>
+                                    <input type="text" class="form-control" readonly value="{{ ordem.0.qtdparc }}">
+                                </div>
+                                {% endif %}
+                                <hr>
+                                <div class="input-group mt-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Cód Produto</span>
+                                    </div>
+                                    <input type="number" class="form-control cod" id="id_produto" name="id_produto" min="0" required>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Descrição</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="dado_produto_desc" name="dado_produto_desc" required>
+                                </div>
+                                <div class="input-group mt-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Quantidade</span>
+                                    </div>
+                                    <input type="number" class="form-control" id="dado_qtd" name="dado_qtd" min="0" required>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Preço de Compra</span>
+                                    </div>
+                                    <input type="number" class="form-control" id="dado_valor" name="dado_valor" step="0.01" min="0" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary w-100" type="submit">Adicionar</button>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body mt-3">
+                    <div class="total-container justify-content-end">
+                        <div>
+                            <a class="btn btn-danger-insert" href="#" data-bs-toggle="modal" data-bs-target="#modal-clear-compra">Limpar</a>
+                            {% if object_list %}
+                            <a class="btn btn-success-insert" href="#" data-bs-toggle="modal" data-bs-target="#modal-confirm-compra">Confirmar</a>
+                            {% else %}
+                            <a class="btn btn-success-insert" href="#">Confirmar</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="table-responsive">            
+                        <table class="table table-hover" id="tabela">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cód Produto</th>
+                                    <th scope="col">Descrição</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Valor por Unidade</th>
+                                    <th scope="col">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in object_list %}
+                                <tr>
+                                    <td>{{ obj.fk_tbprod.pk }}</td>
+                                    <td>{{ obj.fk_tbprod.dsc }}</td>
+                                    <td>{{ obj.qtd }}</td>
+                                    <td>R$ {{ obj.dvlr }}</td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-qtd-compra{{ obj.pk }}">
+                                                    <i class="bi bi-arrow-left-right"></i> Alterar Quantidade</a>
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-delete-compra{{ obj.pk }}">
+                                                    <i class="bi bi-trash"></i> Remover Produto</a>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% include 'modal/md_delete_compra.html' %}
+                                {% include 'modal/md_qtd_compra.html' %}
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% include 'modal/md_clear_compra.html' %}
+                        {% include 'modal/md_confirm_compra.html' %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<div class="row">
+    <div class="col-md-1">
+        <div class="pagetitle">
+            <a class="btn btn-primary" href="{% url 'sc_list_compra' %}"><i class="bi bi-arrow-left-square"></i> Voltar</a>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="pagetitle">
+            <h1>Ordem Fechada</h1>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/autocomplete-produto.js' %}"></script>
+<script src="{% static 'js/autocomplete-fornecedor.js' %}"></script>
+{% endblock %}
